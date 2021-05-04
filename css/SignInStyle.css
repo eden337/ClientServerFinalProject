@@ -1,0 +1,8 @@
+.signInImage{
+    background: url("https://www.maxlifeinsurance.com/content/dam/corporate/images/online%20insurance.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.signInBackground{
+    background-image: linear-gradient(180deg,#ffffff 0%,#000000 100%);    
+}
