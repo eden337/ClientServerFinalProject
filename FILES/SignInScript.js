@@ -5,8 +5,11 @@ function loginValidation(){
         $("#message1-text").html("One of the parameters is incorrect please try again\n "+email+"\n"+pass);
         $("#exampleModalLabel").html("Failure");
         $('#exampleModal').modal('show');
+        return
     }
-    /*
-    GET request and go to Dashboard
-    */
+    const form= document.createElement('form');
+    form.method='get';
+    form.action='/dashboard';
+    document.body.appendChild(form);
+    form.submit(); 
 }
