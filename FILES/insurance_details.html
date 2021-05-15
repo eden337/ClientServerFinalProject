@@ -48,51 +48,51 @@
                                     <div class="col-sm-6 mb-3 mb-sm-0">    
                                         
                                         <label>First Name: </label>  <input type="text" class="form-control form-control-user" id="fname" name="fname"
-                                            placeholder="" onblur="validate(2)"> 
+                                            placeholder="" onblur="validate('fname')"> 
                                             <br>                                 
                                       <label>Social Number: </label>  <input type="text" class="form-control form-control-user" id="social_num" name="social_num"
-                                      placeholder="" onblur="validate(1)"> 
+                                      placeholder="" onblur="validate('social_num')"> 
 
                                     </div>
                                     <div class="col-sm-6">
                                         <label>Last Name: </label>  <input type="text" class="form-control form-control-user" id="lname" name="lname"
-                                            placeholder="" onblur="validate(3)">
+                                            placeholder="" onblur="validate('lname')">
                                             <br>
                                          <label>Phone: </label>  <input type="text" class="form-control form-control-user" id="mob" name="mob"
-                                             placeholder="" onblur="validate(5)"> 
+                                             placeholder="" onblur="validate('mob')"> 
 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     
                                     <label>Mail: </label>  <input type="text" class="form-control form-control-user" id="email" name="email"
-                                    placeholder="" onblur="validate(4)"> 
+                                    placeholder="" onblur="validate('email')"> 
                                     <br>
                                     <label>Insurance Amount: </label>  <input type="text" class="form-control form-control-user" id="ins_amount" name="ins_amount"
-                                    placeholder="" onblur="validate(6)">         
+                                    placeholder="" onblur="validate('ins_amount')">         
 
 
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <lable>Previous Insurance Number:</lable><input type="text" class="form-control form-control-user"
-                                        id="pre_ins_num" name="pre_ins_num" placeholder="" onblur="validate(6)">
+                                        id="pre_ins_num" name="pre_ins_num" placeholder="" onblur="validate('pre_ins_num')">
                                         <br>
                                         <lable>Previous Insurance ID:</lable><input type="text" class="form-control form-control-user"
-                                        id="pre_ins_id" name="pre_ins_id" placeholder="" onblur="validate(6)">
+                                        id="pre_ins_id" name="pre_ins_id" placeholder="" onblur="validate('pre_ins_id')">
 
                                     </div>
                                     <div class="col-sm-6">
                                         <lable>Previous Insurance Company:</lable><input type="text" class="form-control form-control-user"
-                                        id="pre_ins_comp" name="pre_ins_comp" placeholder="" onblur="validate(6)">
+                                        id="pre_ins_comp" name="pre_ins_comp" placeholder="" onblur="validate('pre_ins_comp')">
                                         <br>
                                         <lable>Comments:</lable><input type="text" class="form-control form-control-user"
-                                        id="comment" name="comment" placeholder="" onblur="validate(6)">
+                                        id="comment" name="comment" placeholder="" onblur="validate('comment')">
 
                                     </div>
                                 </div>
                                 <br>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <a href="login.html" class="btn btn-primary btn-user btn-block" onclick="validate('final_check')">
                                     Send Request
                                 </a>
 
