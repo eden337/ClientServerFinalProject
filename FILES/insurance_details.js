@@ -64,7 +64,6 @@ function validate(val)
         if(email_requst == "")
         {
             email.style.borderColor = "green";
-            
         }
         else 
         {
