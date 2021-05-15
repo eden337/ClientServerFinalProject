@@ -23,10 +23,6 @@ function validate(val)
     pre_ins_comp_flag = true;
     comment_flag = true;
     
-   
-
-
-
 
 /*       FIRST NAME           */
 
@@ -118,52 +114,80 @@ function validate(val)
         }
     }
 
-    /*       EMAIL NAME           */
+    /*       PREVIOUS INSURANCE NUMBER           */
 
-    if(val == "email" || val=="final_check") {
-        if(email.value == "") 
+    if(pre_ins_num == "pre_ins_num" || val=="final_check") {
+        if(pre_ins_num.value == "") 
         {
-            email.style.borderColor = "red";
-            email_flag = false;
+            pre_ins_num.style.borderColor = "red";
+            pre_ins_num_flag = false;
         }
         else 
         {
-            email.style.borderColor = "green";
-            email_flag = true;
+            pre_ins_num.style.borderColor = "green";
+            pre_ins_num_flag = true;
         }
     }
 
-    /*       EMAIL NAME           */
+    /*       PREVIOUS INSURANCE ID           */
 
-    if(val == "email" || val=="final_check") {
-        if(email.value == "") 
+    if(pre_ins_id == "pre_ins_id" || val=="final_check") {
+        if(pre_ins_id.value == "") 
         {
-            email.style.borderColor = "red";
-            email_flag = false;
+            pre_ins_id.style.borderColor = "red";
+            pre_ins_id_flag = false;
         }
         else 
         {
-            email.style.borderColor = "green";
-            email_flag = true;
+            pre_ins_id.style.borderColor = "green";
+            pre_ins_id_flag = true;
         }
     }
 
-    /*       EMAIL NAME           */
+    /*       PREVIOUS INSURANCE COMPANY          */
 
-    if(val == "email" || val=="final_check") {
-        if(email.value == "") 
+    if(pre_ins_comp == "pre_ins_comp" || val=="final_check") {
+        if(pre_ins_comp.value == "") 
         {
-            email.style.borderColor = "red";
-            email_flag = false;
+            pre_ins_comp.style.borderColor = "red";
+            pre_ins_comp_flag = false;
         }
         else 
         {
-            email.style.borderColor = "green";
-            email_flag = true;
+            pre_ins_comp.style.borderColor = "green";
+            pre_ins_comp_flag = true;
+        }
+    }
+
+    /*       COMMENT           */
+
+    if(comment == "comment" || val=="final_check") {
+        if(comment.value == "") 
+        {
+            comment.style.borderColor = "red";
+            comment_flag = false;
+        }
+        else 
+        {
+            comment.style.borderColor = "green";
+            comment_flag = true;
         }
     }
     
-    flag = flag1 && flag2 && flag3 && flag4 && flag5 && flag6;
+
+    fname_flag = true;
+    lname_flag = true;
+    email_flag = true;
+    mobile_flag = true;
+    social_num_flag = true;
+    ins_amount_flag = true;
+    pre_ins_num_flag = true;
+    pre_ins_id_flag = true;
+    pre_ins_comp_flag = true;
+    comment_flag = true;
+
+    final_check_flag = fname_flag && lname_flag && email_flag && mobile_flag && social_num_flag && ins_amount_flag
+    && pre_ins_num_flag && pre_ins_id_flag && pre_ins_comp_flag && comment_flag;
     
-    return flag;
+    return final_check_flag;
     }
