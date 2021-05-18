@@ -1,10 +1,10 @@
 <!DOCTYPE html>
     <html>  
         <head>
-            <title>Sign In</title>
-            <link rel="stylesheet" type="text/css" media="all" href="newInsuranceStyle.css"/>
+            <title>New Insurance</title>
+            <link rel="stylesheet" type="text/css" media="all" href="/static/css/newInsuranceStyle.css"/>
         </head>
-        <script src="newInsuranceJs.js"></script>
+        <script src="/static/js/insurance_details.js"></script>
         <body>
             <div class="container-fluid px-1 py-5 mx-auto">
                 <div class="row d-flex justify-content-center">
@@ -15,20 +15,23 @@
                             <h5 class="text-center mb-4">Powering world-class companies</h5>
                             <form class="form-card" onsubmit="return validate(0)">
                                 <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">First name<span class="text-danger"> *</span></label> <input type="text" id="fname" name="fname" placeholder="Enter your first name" onblur="validate(1)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Last name<span class="text-danger"> *</span></label> <input type="text" id="lname" name="lname" placeholder="Enter your last name" onblur="validate(2)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <head class="form-control-label px-3">Fill Your Previous Insurance </head>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Social Number:<span class="text-danger"> *</span></label> <input type="text" id="social_num" name="social_num" placeholder="" onblur="validate(1)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">First Name:<span class="text-danger"> *</span></label> <input type="text" id="fname" name="fname" placeholder="" onblur="validate(2)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Last Name:<span class="text-danger"> *</span></label> <input type="text" id="lname" name="lname" placeholder="" onblur="validate(3)"> </div>
                                 </div>
                                 <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Business email<span class="text-danger"> *</span></label> <input type="text" id="email" name="email" placeholder="" onblur="validate(3)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Phone number<span class="text-danger"> *</span></label> <input type="text" id="mob" name="mob" placeholder="" onblur="validate(4)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Mail:<span class="text-danger"> *</span></label> <input type="text" id="email" name="email" placeholder="" onblur="validate(4)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Phone:<span class="text-danger"> *</span></label> <input type="text" id="mob" name="mob" placeholder="" onblur="validate(5)"> </div>
+                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Insurance Amount:<span class="text-danger"> *</span></label> <input type="text" id="ins_amount" name="ins_amount" placeholder="" onblur="validate(6)"> </div>
                                 </div>
                                 <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Job title<span class="text-danger"> *</span></label> <input type="text" id="job" name="job" placeholder="" onblur="validate(5)"> </div>
+                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance Number:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_num" name="pre_ins_num" placeholder="" onblur="validate(6)"> </div>
+                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance ID:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_id" name="pre_ins_id" placeholder="" onblur="validate(6)"> </div>
+                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance Company:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_comp" name="pre_ins_comp" placeholder="" onblur="validate(6)"> </div>
+                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Comments:<span class="text-danger"> *</span></label> <input type="text" id="comment" name="comment" placeholder="" onblur="validate(6)"> </div>
                                 </div>
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">What would you be using Flinks for?<span class="text-danger"> *</span></label> <input type="text" id="ans" name="ans" placeholder="" onblur="validate(6)"> </div>
-                                </div>
-                                <div class="row justify-content-end">method="get"
+                                <div class="row justify-content-end">
                                     <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-primary">Request a demo</button> </div>
                                 </div>
                             </form>
