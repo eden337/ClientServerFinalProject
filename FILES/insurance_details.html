@@ -1,43 +1,120 @@
 <!DOCTYPE html>
     <html>  
+
         <head>
-            <title>Sign In</title>
-            <link rel="stylesheet" type="text/css" media="all" href="newInsuranceStyle.css"/>
+
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta name="description" content="">
+            <meta name="author" content="">
+        
+            <title>Insurance Details</title>
+        
+            <!-- Custom fonts for this template-->
+            <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <link
+                href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+                rel="stylesheet">
+        
+            <!-- Custom styles for this template-->
+            <link href="css/sb-admin-2.min.css" rel="stylesheet">
+        
         </head>
-        <script src="insurance_details.js"></script>
-        <body>
-            <div class="container-fluid px-1 py-5 mx-auto">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
-                        <h3>Request a Demo</h3>
-                        <p class="blue-text">Just answer a few questions<br> so that we can personalize the right experience for you.</p>
-                        <div class="card">
-                            <h5 class="text-center mb-4">Powering world-class companies</h5>
-                            <form class="form-card" onsubmit="return validate(0)">
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <head class="form-control-label px-3">Fill Your Previous Insurance </head>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Social Number:<span class="text-danger"> *</span></label> <input type="text" id="social_num" name="social_num" placeholder="" onblur="validate(1)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">First Name:<span class="text-danger"> *</span></label> <input type="text" id="fname" name="fname" placeholder="" onblur="validate(2)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Last Name:<span class="text-danger"> *</span></label> <input type="text" id="lname" name="lname" placeholder="" onblur="validate(3)"> </div>
+
+
+        
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Request a Demo</h1>
+                                <h5>Powering world-class companies</h5>
+                                <h8> Just answer a few questions<br> so that we can personalize the right experience for you.</h8>
+                                <br><br>
+                                <h6>Fill Your Previous Insurance </h6>
+                                <br>
+                            </div>
+                            <form class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">    
+                                        
+                                        <label>First Name: </label>  <input type="text" class="form-control form-control-user" id="fname" name="fname"
+                                            placeholder="" onblur="validate('fname')"> 
+                                            <br>                                 
+                                      <label>Social Number: </label>  <input type="text" class="form-control form-control-user" id="social_num" name="social_num"
+                                      placeholder="" onblur="validate('social_num')"> 
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>Last Name: </label>  <input type="text" class="form-control form-control-user" id="lname" name="lname"
+                                            placeholder="" onblur="validate('lname')">
+                                            <br>
+                                         <label>Phone: </label>  <input type="text" class="form-control form-control-user" id="mob" name="mob"
+                                             placeholder="" onblur="validate('mob')"> 
+
+                                    </div>
                                 </div>
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Mail:<span class="text-danger"> *</span></label> <input type="text" id="email" name="email" placeholder="" onblur="validate(4)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Phone:<span class="text-danger"> *</span></label> <input type="text" id="mob" name="mob" placeholder="" onblur="validate(5)"> </div>
-                                    <div class="form-group col-sm-6 flex-column d-flex"> <label class="form-control-label px-3">Insurance Amount:<span class="text-danger"> *</span></label> <input type="text" id="ins_amount" name="ins_amount" placeholder="" onblur="validate(6)"> </div>
+                                <div class="form-group">
+                                    
+                                    <label>Mail: </label>  <input type="text" class="form-control form-control-user" id="email" name="email"
+                                    placeholder="" onblur="validate('email')"> 
+                                    <br>
+                                    <label>Insurance Amount: </label>  <input type="text" class="form-control form-control-user" id="ins_amount" name="ins_amount"
+                                    placeholder="" onblur="validate('ins_amount')">         
+
+
                                 </div>
-                                <div class="row justify-content-between text-left">
-                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance Number:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_num" name="pre_ins_num" placeholder="" onblur="validate(6)"> </div>
-                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance ID:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_id" name="pre_ins_id" placeholder="" onblur="validate(6)"> </div>
-                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Previous Insurance Company:<span class="text-danger"> *</span></label> <input type="text" id="pre_ins_comp" name="pre_ins_comp" placeholder="" onblur="validate(6)"> </div>
-                                    <div class="form-group col-12 flex-column d-flex"> <label class="form-control-label px-3">Comments:<span class="text-danger"> *</span></label> <input type="text" id="comment" name="comment" placeholder="" onblur="validate(6)"> </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <lable>Previous Insurance Number:</lable><input type="text" class="form-control form-control-user"
+                                        id="pre_ins_num" name="pre_ins_num" placeholder="" onblur="validate('pre_ins_num')">
+                                        <br>
+                                        <lable>Previous Insurance ID:</lable><input type="text" class="form-control form-control-user"
+                                        id="pre_ins_id" name="pre_ins_id" placeholder="" onblur="validate('pre_ins_id')">
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <lable>Previous Insurance Company:</lable><input type="text" class="form-control form-control-user"
+                                        id="pre_ins_comp" name="pre_ins_comp" placeholder="" onblur="validate('pre_ins_comp')">
+                                        <br>
+                                        <lable>Comments:</lable><input type="text" class="form-control form-control-user"
+                                        id="comment" name="comment" placeholder="" onblur="validate('comment')">
+
+                                    </div>
                                 </div>
-                                <div class="row justify-content-end">
-                                    <div class="form-group col-sm-6"> <button type="submit" class="btn-block btn-primary">Request a demo</button> </div>
-                                </div>
+                                <br>
+                                <a href="login.html" class="btn btn-primary btn-user btn-block" onclick="validate('final_check')">
+                                    Send Request
+                                </a>
+
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </body>
-    </html>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="insurance_details.js"></script>
+
+</body>
+
+</html>
