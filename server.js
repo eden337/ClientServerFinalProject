@@ -2,17 +2,34 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var fs=require('fs');
+const { Client } = require('pg');
+
 var bodyParser = require('body-parser');
 //Port of web or 8080 in localHOST
 var PORT = process.env.PORT || 8080
 //Used to parse data on POST
 var urlEncodedParser = bodyParser.urlencoded({extended:false});
 //Use public directory as /static in server
-app.use('/static', express.static('./'));
+app.use('/static', express.static('/public'));
+
+/*-----START-----
+client representing the website to declare and connect as  a client to the postgresql database
+*/
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  client.connect();
+  /*-----END-----*/
+
+
 //Default of the website go to Home page
 app.get('/', function (req, res) {
     return res.redirect("/sign-in");
 })
+
 app.get('/sign-in', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/signInPage.html'));
 })
@@ -26,7 +43,15 @@ app.get('/users', function (req, res) {
 app.get('/new_insurance', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/insurance_details.html'));
 })
-
+app.get('/test', function (req, res) {
+    client.query("select * from users;",function(err,data){
+        console.log(data);
+        res.json(data);
+    })
+})
+app.get('/yuda', function (req, res) {
+    res.sendFile(path.join(__dirname, '/test.html'));
+})
 
 
 app.get('/calculate', function (req, res) {
