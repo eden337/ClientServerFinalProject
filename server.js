@@ -10,7 +10,7 @@ var PORT = process.env.PORT || 8080
 //Used to parse data on POST
 var urlEncodedParser = bodyParser.urlencoded({extended:false});
 //Use public directory as /static in server
-app.use('/static', express.static('/public'));
+app.use('/static', express.static('./'));
 
 /*-----START-----
 client representing the website to declare and connect as  a client to the postgresql database
