@@ -45,8 +45,7 @@ app.get('/new_insurance', function (req, res) {
 })
 app.get('/test', function (req, res) {
     client.query("select * from users;",function(err,data){
-        console.log(data);
-        res.json(data);
+        res.json(JSON.parse(data));
     })
 })
 app.get('/yuda', function (req, res) {
