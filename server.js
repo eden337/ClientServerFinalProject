@@ -27,7 +27,7 @@ const client = new Client({
 
 //Default of the website go to Home page
 app.get('/', function (req, res) {
-    return res.redirect("/sign-in");
+    return res.redirect("/yuda");
 })
 
 app.get('/sign-in', function (req, res) {
@@ -45,7 +45,7 @@ app.get('/new_insurance', function (req, res) {
 })
 app.get('/test', function (req, res) {
     client.query("select * from users;",function(err,data){
-        res.json(JSON.parse(data));
+        res.send(data.rows);
     })
 })
 app.get('/yuda', function (req, res) {
