@@ -18,28 +18,28 @@ app.use('/static', express.static('./'));
 /*-----START----- postgres
 client representing the website to declare and connect as  a client to the postgresql database
 */
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-//   });
-//   client.connect();
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  client.connect();
   /*-----END-----*/
   /*-----START----- mysql local*/
-  let connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Yh321789654',
-    database: 'todoapp'
-});
-    connection.connect(function(err) {
-        if (err) {
-            return console.error('error: ' + err.message);
-        }
+//   let connection = mysql.createConnection({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'Yh321789654',
+//     database: 'todoapp'
+// });
+//     connection.connect(function(err) {
+//         if (err) {
+//             return console.error('error: ' + err.message);
+//         }
   
-    console.log('Connected to the MySQL server.');
-  });
+//     console.log('Connected to the MySQL server.');
+//   });
   /*-----END-----*/
 
 
@@ -87,7 +87,8 @@ app.post('/send-request',urlEncodedParser,function(req,res){
 app.post('/DB-login',urlEncodedParser,function(req,res){
     var user=req.body.email;
     var pass=req.body.pass;
-    connection.query("select * from users;",function(err,data){
+    // connection.query("select * from users;",function(err,data){
+        client.query("select * from users;",function(err,data){
         if(user==data[0].name && pass==data[0].password){
             res.send("/dashboard");
         }

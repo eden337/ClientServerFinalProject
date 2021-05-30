@@ -1,4 +1,5 @@
 function loginValidation(){
+    
     var email= document.getElementById("email").value;
     var pass = document.getElementById("pass").value;
     var message ="One of the parameters is incorrect please try again\n mail : "+email+"\n pass : "+pass;
