@@ -8,6 +8,7 @@ const { Client } = require('pg');
 let mysql = require('mysql');
 
 var bodyParser = require('body-parser');
+const { randomInt } = require('crypto');
 //Port of web or 8080 in localHOST
 var PORT = process.env.PORT || 8080
 //Used to parse data on POST
@@ -15,31 +16,29 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 //Use public directory as /static in server
 app.use('/static', express.static('./'));
 
-/*-----START----- postgres
+/*-----START----- postgres online
 client representing the website to declare and connect as  a client to the postgresql database
 */
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  client.connect();
-  /*-----END-----*/
-  /*-----START----- mysql local*/
-//   let connection = mysql.createConnection({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'Yh321789654',
-//     database: 'todoapp'
-// });
-//     connection.connect(function(err) {
-//         if (err) {
-//             return console.error('error: ' + err.message);
-//         }
-  
-//     console.log('Connected to the MySQL server.');
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
 //   });
+//   client.connect();
+  /*-----END-----*/
+
+  /*-----START----- postgres local*/
+  const client =new Client ({
+    host: 'localhost', // server name or IP address;
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'Yh321789654'
+});
+client.connect(function(err,result){
+    console.log("Connected to db");
+});
   /*-----END-----*/
 
 
@@ -64,7 +63,10 @@ app.get('/new_insurance', function (req, res) {
 app.get('/thankyou',function(req,res){
     res.sendFile(path.join(__dirname, '/html/thankyou.html'));
 })
+/*  Finished working in local
+    Need to check online*/
 app.post('/send-request',urlEncodedParser,function(req,res){
+    var request_id=randomInt(1,10000);
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
@@ -74,39 +76,36 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var pre_ins_id=req.body.pre_ins_id2;
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
-    console.log(req.body);
-    connection.query("insert into requests (client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
-    " values"+" ('"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
-        if(err){
-            console.error("error:"+err.message);
-        }
+    client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
+    " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
         res.send('/thankyou');
     });
     
 })
+/*  Finished working in local
+    Need to check online*/
 app.post('/DB-login',urlEncodedParser,function(req,res){
     var user=req.body.email;
     var pass=req.body.pass;
-    // connection.query("select * from users;",function(err,data){
         client.query("select * from users;",function(err,data){
-        if(user==data[0].name && pass==data[0].password){
-            res.send("/dashboard");
-        }
-        else
-            res.send("not ok");
+            for(var i=0;i<data.rows.length;i++)
+                if(user===data.rows[i].name && pass===data.rows[i].password){
+                    return res.send("/dashboard");
+                }
+            res.send("not ok")
     });
 })
 app.get('/test', function (req, res) {
-    connection.query("select * from users;",function(err,data){
-        console.log(data[0]);
-        res.json(data[0]);
-    })
 })
 app.get('/yuda', function (req, res) {
-    res.sendFile(path.join(__dirname, '/test.html'));
+    client.query("insert into requests (client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
+    " values"+" ('"+"name"+"','"+"social"+"','"+"email"+"','"+"mobile"+"','"+"ins_amount"+"','"+"pre_ins_num"+"','"+"pre_ins_id"+"','"+"pre_ins_comp"+"','"+"comment"+"')",function(err,result){
+        res.json(result);
+    });
 })
 
-
+/*  Need working in local
+    Need to check online*/
 app.get('/calculate', function (req, res) {
     var data = fs.readFileSync('IsraelIsraeli.json')
     var severity="";

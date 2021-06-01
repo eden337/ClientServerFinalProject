@@ -31,7 +31,7 @@ function validate(val)
         if(fname.value == "") 
         {
             fname.style.borderColor = "red";
-            requirements += "fil the first name field\n";
+            requirements += "Fill the first name field\n";
 
         }
         else 
@@ -48,7 +48,7 @@ function validate(val)
         if(lname.value == "") 
         {
             lname.style.borderColor = "red";
-            requirements += "fil the last name field\n";
+            requirements += "Fill the last name field\n";
 
         }
         else 
@@ -64,14 +64,14 @@ function validate(val)
     {
         email_requst = "";
         if(email.value == "") 
-            email_requst+= "fill the email field\n";
+            email_requst+= "Fill the email field\n";
 
         str = email.value;
         shindex = str.indexOf('@',0);
         if (shindex != -1)
             shindex = str.indexOf('.',shindex);
         if (shindex == -1 )
-            email_requst+= "email not correct\n";
+            email_requst+= "Email not correct\n";
         if(email_requst == "")
         {
             email.style.borderColor = "green";
@@ -89,7 +89,7 @@ function validate(val)
     {
         if(mobile.value == "") {
             mobile.style.borderColor = "red";
-            requirements += "fil the mobile number field\n";
+            requirements += "Fill the mobile number field\n";
 
         }
         else {
@@ -105,20 +105,20 @@ function validate(val)
         social_num_requst = "";
         
         if(social_num.value === "")
-            social_num_requst += "fill the social number field\n";
+            social_num_requst += "Fill the social number field\n";
 
         my_var = social_num.value;
         for(var i = 0 ; i < my_var.length ;i++)
         {
             if (! Number.isInteger(my_var.charAt(i) - '0') )
             {
-                social_num_requst += "social number has to be only numeric";
+                social_num_requst += "Social number has to be only numeric";
                 break;
             }
         }
 
         if(social_num.value.length != 9)
-            social_num_requst += "social number has to be 9 digits\n";
+            social_num_requst += "Social number has to be 9 digits\n";
         
         
         if(social_num_requst === "") {
@@ -137,7 +137,7 @@ function validate(val)
         if(ins_amount.value == "") 
         {
             ins_amount.style.borderColor = "red";
-            requirements += "fil the insurance amount field\n";
+            requirements += "Fill the insurance amount field\n";
 
         }
         else 
@@ -154,7 +154,7 @@ function validate(val)
         if(pre_ins_num.value == "") 
         {
             pre_ins_num.style.borderColor = "red";
-            requirements += "fil the previous insurance number field\n";
+            requirements += "Fill the previous insurance number field\n";
 
         }
         else 
@@ -171,7 +171,7 @@ function validate(val)
         if(pre_ins_id.value == "") 
         {
             pre_ins_id.style.borderColor = "red";
-            requirements += "fil the previous insurance id field\n";
+            requirements += "Fill the previous insurance id field\n";
         }
         else 
         {
@@ -186,7 +186,7 @@ function validate(val)
         if(pre_ins_comp.value == "") 
         {
             pre_ins_comp.style.borderColor = "red";
-            requirements += "fil the previous insurance company field\n";
+            requirements += "Fill the previous insurance company field\n";
 
         }
         else 
@@ -203,7 +203,7 @@ function validate(val)
         if(comment.value == "") 
         {
             comment.style.borderColor = "red";
-            requirements += "fil the comment field\n";
+            requirements += "Fill the comment field\n";
 
         }
         else 
@@ -217,7 +217,7 @@ function validate(val)
     {
         if(val=="final_check"){
             $.post('/send-request',{fname2,lname2,email2,mobile2,social_num2,ins_amount2,pre_ins_num2,pre_ins_id2,pre_ins_comp2,comment2},function(data,textstatus){
-                console.log(data);/*ERROR HERE CANT SEE DATA AFTER DB INSERT*/
+                console.log(data);
                 window.location=data;
             })
         }   
