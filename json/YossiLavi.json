@@ -1,8 +1,8 @@
-{
+
     {
         "insuranceType": "CarInsurance",
-		"FirstName": "Yossi"
-		"LastName": "Lavi"
+		"FirstName": "Yossi",
+		"LastName": "Lavi",
         "insuranceAmountRequested": "322",
         "insuranceCompanyName": "Harel",
         "insuranceData": [
@@ -13,14 +13,13 @@
                 "Previousinsurancenumber": 23344,        
                 "PrevinsuranceID": 3434,
                 "insuranceCompanyfee": "10"
-            },
+            }
            
         ],
         "insuranceEnable": 1, 
-        "dateofEnblment": 01082025,
+        "dateofEnblment": 1082025,
         "CarStatus": "New driver",
-        "UserRank": "3" 
-		"comment": "1 low , 2 mid , 3 high , 4 severe"
+        "UserRank": "3" ,
+		"comment": "1 low , 2 mid , 3 high , 4 severe",
         "message": "New driver"
 	}
-}

@@ -13,14 +13,16 @@
 
     <!-- Custom fonts for this template-->
     <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/static/css/dashboard.css" rel="stylesheet">
-    <script src="/static/js/dashboardScript.js"></script>
+    <link href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet">
+    
+    
+    
 </head>
 
 <body id="page-top">
@@ -85,47 +87,16 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Severity</th>
-                                            <th>Category</th>
-                                            <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Status date</th>
-                                            <th>Due Date</th>
-                                            <th></th>
+                                            <!-- IMPORTANT CHANGE  COLUMNS NAMES -->
+                                            <th scope="col">Severity</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Due Date</th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Severity</th>
-                                            <th>Category</th>
-                                            <th>Name</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Due Date</th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td id="Severity_Rank">High</td>
-                                            <td>Car Insurance</td>
-                                            <td>Example</td>
-                                            <td>61</td>
-                                            <td>In Review</td>
-                                            <td>2011/04/25</td>
-                                            <td><a href="/calculate"><i class="fas fa-calculator calc-button"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td id="Severity_Rank">High</td>
-                                            <td>Car Insurance</td>
-                                            <td>Example</td>
-                                            <td>61</td>
-                                            <td>In Review</td>
-                                            <td>2011/04/25</td>
-                                            <td><i class="fas fa-ellipsis-h calc-button" method="GET" action="/calculate"></td>
-                                        </tr>
-                             
-                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -195,7 +166,9 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/dashboardScript.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>

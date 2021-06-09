@@ -1,8 +1,8 @@
-{
+
     {
         "insuranceType": "CarInsurance",
-		"FirstName": "Moshe"
-		"LastName": "Cohen"
+		"FirstName": "Moshe",
+		"LastName": "Cohen",
         "insuranceAmountRequested": "2000",
         "insuranceCompanyName": "Harel",
         "insuranceData": [
@@ -13,14 +13,13 @@
                 "Previousinsurancenumber": 5343434,        
                 "PrevinsuranceID": 1333,
                 "insuranceCompanyfee": "10"
-            },
+            }
            
         ],
         "insuranceEnable": 1, 
         "dateofEnblment": 10042022,
         "CarStatus": "no_claims",
-        "UserRank": "1" 
-		"comment": "1 low , 2 mid , 3 high , 4 severe"
+        "UserRank": "1" ,
+		"comment": "1 low , 2 mid , 3 high , 4 severe",
         "message": "no_claims"
 	}
-}

@@ -1,3 +1,4 @@
-.calc-button{
-cursor:pointer;
+.calc-button:hover{
+    color: greenyellow;
+    cursor:pointer;
 }
