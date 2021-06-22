@@ -18,7 +18,10 @@
                 rel="stylesheet">
         
             <!-- Custom styles for this template-->
+            
             <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+            <link href="/static/css/newInsuranceStyle.css" rel="stylesheet">
+            
         
         </head>
 
@@ -58,7 +61,7 @@
                                         <label>Last Name: </label>  <input type="text" class="form-control form-control-user" id="lname" name="lname"
                                             placeholder="" onblur="validate('lname')" required>
                                             <br>
-                                         <label>Phone: </label>  <input type="number" class="form-control form-control-user" id="mob" name="mob"
+                                         <label>Phone: </label>  <input type="text" class="form-control form-control-user" id="mob" name="mob"
                                              placeholder="" onblur="validate('mob')"> required 
 
                                     </div>
@@ -85,8 +88,7 @@
                                     <div class="col-sm-6">
                                         <lable>Previous Insurance Company: </lable>
                                         <div>
-                                            <select id="pre_ins_comp" class="form-control form-control-user" name="pre_ins_comp" autocomplete="off" onblur="validate('pre_ins_comp')">
-                                                <option value=""></option>
+                                            <select id="pre_ins_comp" class="form-control yuda" name="pre_ins_comp" autocomplete="off" onblur="validate('pre_ins_comp')">
                                                 <option value="Migdal">Migdal</option>
                                                 <option value="Yashir">Yashir</option>
                                                 <option value="Harel">Harel</option>

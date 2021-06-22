@@ -4,8 +4,6 @@ var app = express();
 var fs=require('fs');
 /*ONLINE DB*/
 const { Client } = require('pg');
-/*LOCAL DB*/
-let mysql = require('mysql');
 
 var bodyParser = require('body-parser');
 const { randomInt } = require('crypto');
@@ -133,13 +131,20 @@ app.get('/dashboardTable',function(req,res){
         return res.json(data.rows);
     })
 })
+app.post('/client-Info',urlEncodedParser,function(req,res){
+    client.query("SELECT * from requests where request_id='5060'",function(err,data){
+        console.log(data.rows);
+        return res.json(data.rows);
+    })
+});
 
 
 app.post('/test',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
     var amount=req.body.amount;
     var severity;
-    var userData = fs.readFileSync(clientName+".json");
+    var userData = fs.readFileSync("./json/"+clientName+".json");
+    //  var userData = fs.readFileSync("./json/IsraelIsraeli.json");
     const UTF8_BOM = "\u{FEFF}";                    
     if( userData.includes(UTF8_BOM)){
         userData.subarray(1);
@@ -153,17 +158,15 @@ app.post('/test',urlEncodedParser, function (req, res) {
     var policyJsonContent =JSON.parse(policyData);
     var txt="";
     for(i in policyJsonContent){
-        // txt+=jsonContent[i][0].UserRank;
         if(policyJsonContent[i][0].UserRank==userJsonContent.UserRank){
             var id=userJsonContent.insuranceData[0].PrevinsuranceID;
             severity=i;
-            client.query("UPDATE requests SET severity="+severity+" status='Reviewed' category='Car_Insurance' due_date='1/9/2021' where previous_insurance_id="+id+"");
+            client.query("UPDATE requests SET severity='"+severity+"',category='Car Insurance',status='Reviewed',due_date='1/9/2021' where previous_insurance_id='"+id+"'");
         }
-       
-            
     }
-    console.log(severity);
-    return res.json(userJsonContent);
+    client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
+        return res.json(data.rows);
+    })
 })
 app.get('/yuda',urlEncodedParser, function (req, res) {
     var data = fs.readFileSync("./json/MosheCohen.json");
