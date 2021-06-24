@@ -17,23 +17,23 @@ app.use('/static', express.static('./'));
 /*-----START----- postgres online
 client representing the website to declare and connect as  a client to the postgresql database
 */
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  client.connect();
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+//   });
+//   client.connect();
   /*-----END-----*/
 
   /*-----START----- postgres local*/
-//   const client =new Client ({
-//     host: 'localhost', // server name or IP address;
-//     port: 5432,
-//     database: 'postgres',
-//     user: 'postgres',
-//     password: 'Yh321789654'
-// });
+  const client =new Client ({
+    host: 'localhost', // server name or IP address;
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'Spidy_@337'
+});
 client.connect(function(err,result){
     console.log("Connected to db");
 });
@@ -65,6 +65,16 @@ app.get('/thankyou',function(req,res){
     Need to check online*/
 app.post('/send-request',urlEncodedParser,function(req,res){
     var request_id=randomInt(1,10000);
+    console.log(request_id);
+    client.query("select * from requests where request_id ='"+request_id+"'",function(err,data){
+       // console.log(data.rows[0]);
+        if(data!==null){
+            //console.log("entered");
+            //irelavant
+            request_id=randomInt(1,10000);
+        }
+    });
+    //console.log(request_id);
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
@@ -76,10 +86,14 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var comment=req.body.comment2;
     client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
     " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
+        if(err){
+            throw err;
+        }
+        console.log(request_id);
         res.send('/thankyou');
     });
     
-})
+});
 /*  Finished working in local
     Need to check online*/
 app.post('/DB-login',urlEncodedParser,function(req,res){
@@ -126,11 +140,87 @@ app.post('/calculate', function (req, res) {
     return res.json(jsonContent);
 })
 
-app.get('/dashboardTable',function(req,res){
+app.get('/piechart',function(req,res){
+    var low =0;
+    var medium=0;
+    var high = 0;
+    var sever=0;
+    var numOfRequests=0;
     client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        for(var i=0;i<data.rowCount;i++){
+            switch(data.rows[i].severity){
+                case 'Low':
+                    low++;
+                    numOfRequests++;
+                    break;
+                case 'Medium':
+                    medium++;
+                    numOfRequests++;
+                    break;
+                case 'High':
+                    high++;
+                    numOfRequests++;
+                    break;
+                case 'Severe':
+                    sever++;
+                    numOfRequests++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        var charData=[];
+        if(numOfRequests!==0)
+            chartData = [(low/numOfRequests)*100,(medium/numOfRequests)*100,(high/numOfRequests)*100,(sever/numOfRequests)*100];
+
+        var charDataObject = {'low': chartData[0],'medium': chartData[1],'high': chartData[2],'sever': chartData[3]};
+        return res.json(charDataObject);
+    });
+});
+
+app.get('/dashboardTable',function(req,res){
+    var low =0;
+    var medium=0;
+    var high = 0;
+    var sever=0;
+    var numOfRequests=0;
+    client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        for(var i=0;i<data.rowCount;i++){
+            var badgeColor = 'light';
+            switch(data.rows[i].severity){
+                case 'Low':
+                    low++;
+                    numOfRequests++;
+                    badgeColor='success';
+                    break;
+                case 'Medium':
+                    medium++;
+                    numOfRequests++;
+                    badgeColor='secondary';
+                    break;
+                case 'High':
+                    high++;
+                    numOfRequests++;
+                    badgeColor='warning';
+                    break;
+                case 'Severe':
+                    sever++;
+                    numOfRequests++;
+                    badgeColor='danger';
+                    break;
+                default:
+
+                    badgeColor='light';
+                    break;
+            }
+            data.rows[i].severity = "<span class='badge badge-pill badge-"+badgeColor+"';>"+data.rows[i].severity+"</span>";
+        }
+        if(numOfRequests!==0)
+        var chartData = [(low/numOfRequests)*100,(medium/numOfRequests)*100,(high/numOfRequests)*100,(sever/numOfRequests)*100];
         return res.json(data.rows);
-    })
-})
+    });
+});
+
 app.post('/client-Info',urlEncodedParser,function(req,res){
     client.query("SELECT * from requests where request_id='5060'",function(err,data){
         console.log(data.rows);
@@ -141,6 +231,7 @@ app.post('/client-Info',urlEncodedParser,function(req,res){
 
 app.post('/test',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
+    clientName =clientName.replace(/\s+/g,'').trim();
     var amount=req.body.amount;
     var severity;
     var userData = fs.readFileSync("./json/"+clientName+".json");
@@ -161,7 +252,11 @@ app.post('/test',urlEncodedParser, function (req, res) {
         if(policyJsonContent[i][0].UserRank==userJsonContent.UserRank){
             var id=userJsonContent.insuranceData[0].PrevinsuranceID;
             severity=i;
-            client.query("UPDATE requests SET severity='"+severity+"',category='Car Insurance',status='Reviewed',due_date='1/9/2021' where previous_insurance_id='"+id+"'");
+            client.query("UPDATE requests SET severity='"+severity+"',category='Car Insurance',status='Reviewed',due_date='1/9/2021' where previous_insurance_id='"+id+"'",function(err,res){
+                if(err){
+                    throw err;
+                }
+            });
         }
     }
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){

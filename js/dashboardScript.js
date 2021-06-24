@@ -8,6 +8,7 @@ var clientName;
 var amount;
 var colIndex;
 var rowIndex;
+
 function loadTable()
 {
     $.ajax({
@@ -56,13 +57,32 @@ $(document).ready(function() {
 function Calculate(body){
     $.post('/test',{clientName,amount},function(data,status){
         console.log(JSON.stringify(data));
-        severityCell.data("<span style='color:red;'>"+data[0].severity+"</span>")
+        var color='danger';
+        console.log(data[0].severity);
+        switch(data[0].severity){
+            case 'Low':
+                color='success';
+                break;
+            case 'Medium':
+                color='secondary';
+                break;
+            case 'High':
+                color='warning';
+                break;
+            case 'Severe':
+                color='danger';
+                break;
+            default:
+                color='light';
+                break;
+        }
+        severityCell.data("<span class= 'badge badge-pill badge-"+color+"';>"+data[0].severity+"</span>");
         catCell.data(data[0].category);
         statucCell.data(data[0].status);
-        dueDateCell.data(data[0].due_date)
-        buttonCell.data("<i class='fas fa-ellipsis-h' onClick=moreInfo()></i>")
+        dueDateCell.data(data[0].due_date);
+        buttonCell.data("<i class='fas fa-ellipsis-h' onClick=moreInfo()></i>");
 
-    })
+    });
     // var name=myTable.cell(rowIndex,2).data();
     // var amount=myTable.cell(rowIndex,3).data();
     // console.log(name);
