@@ -4,8 +4,6 @@ var app = express();
 var fs=require('fs');
 /*ONLINE DB*/
 const { Client } = require('pg');
-/*LOCAL DB*/
-let mysql = require('mysql');
 
 var bodyParser = require('body-parser');
 const { randomInt } = require('crypto');
@@ -62,11 +60,21 @@ app.get('/new_insurance', function (req, res) {
 })
 app.get('/thankyou',function(req,res){
     res.sendFile(path.join(__dirname, '/html/thankyou.html'));
-})
+});
 /*  Finished working in local
     Need to check online*/
 app.post('/send-request',urlEncodedParser,function(req,res){
     var request_id=randomInt(1,10000);
+    console.log(request_id);
+    client.query("select * from requests where request_id ='"+request_id+"'",function(err,data){
+       // console.log(data.rows[0]);
+        if(data!==null){
+            //console.log("entered");
+            //irelavant
+            request_id=randomInt(1,10000);
+        }
+    });
+    //console.log(request_id);
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
@@ -76,12 +84,52 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var pre_ins_id=req.body.pre_ins_id2;
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
+    var userRank = randomInt(1,4);
+    
+    let user={
+        "insuranceType": "CarInsurance",
+        "FirstName": req.body.fname2,
+        "LastName": req.body.lname2,
+        "insuranceAmountRequested": ins_amount,
+        "insuranceCompanyName": "Harel",
+        "insuranceData": [
+        {
+            "companyUserId": 123,
+            "PrevinsuranceCompanyName": pre_ins_comp,
+            "RequestNumber": 5578,
+            "Previousinsurancenumber": pre_ins_num,        
+            "PrevinsuranceID": pre_ins_id,
+            "insuranceCompanyfee": "10"
+        }
+        
+    ],
+        "insuranceEnable": 1, 
+        "dateofEnblment": 10042022,
+        "CarStatus": "accident",
+        "UserRank": ""+userRank+"" ,
+        "comment": comment,
+        "message": "accident with car Golf in Tel Aviv"
+    };
+
+    fs.writeFile("./json/"+req.body.fname2+req.body.lname2+".json",JSON.stringify(user,null,2),function(err,res){
+        if(err)
+        {
+            throw err;
+        }
+    });
+
+
     client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
     " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
+        if(err){
+            throw err;
+        }
+        console.log(request_id);
+
         res.send('/thankyou');
     });
     
-})
+});
 /*  Finished working in local
     Need to check online*/
 app.post('/DB-login',urlEncodedParser,function(req,res){
@@ -128,11 +176,99 @@ app.post('/calculate', function (req, res) {
     return res.json(jsonContent);
 })
 
-app.get('/dashboardTable',function(req,res){
+app.get('/piechart',function(req,res){
+    var low =0;
+    var medium=0;
+    var high = 0;
+    var sever=0;
+    var numOfRequests=0;
     client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        for(var i=0;i<data.rowCount;i++){
+            switch(data.rows[i].severity){
+                case 'Low':
+                    low++;
+                    numOfRequests++;
+                    break;
+                case 'Mid':
+                    medium++;
+                    numOfRequests++;
+                    break;
+                case 'High':
+                    high++;
+                    numOfRequests++;
+                    break;
+                case 'Severe':
+                    sever++;
+                    numOfRequests++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        var charData=[];
+        if(numOfRequests!==0)
+            chartData = [(low/numOfRequests)*100,(medium/numOfRequests)*100,(high/numOfRequests)*100,(sever/numOfRequests)*100];
+
+        var charDataObject = {'low': chartData[0],'medium': chartData[1],'high': chartData[2],'sever': chartData[3]};
+        return res.json(charDataObject);
+    });
+});
+
+app.get('/dashboardTable',function(req,res){
+    var low =0;
+    var medium=0;
+    var high = 0;
+    var sever=0;
+    var numOfRequests=0;
+    client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        for(var i=0;i<data.rowCount;i++){
+            var badgeColor = 'light';
+            switch(data.rows[i].severity){
+                case 'Low':
+                    low++;
+                    numOfRequests++;
+                    badgeColor='success';
+                    break;
+                case 'Mid':
+                    medium++;
+                    numOfRequests++;
+                    badgeColor='secondary';
+                    break;
+                case 'High':
+                    high++;
+                    numOfRequests++;
+                    badgeColor='warning';
+                    break;
+                case 'Severe':
+                    sever++;
+                    numOfRequests++;
+                    badgeColor='danger';
+                    break;
+                default:
+
+                    badgeColor='light';
+                    break;
+            }
+            data.rows[i].severity = "<span class='badge badge-pill badge-"+badgeColor+"';>"+data.rows[i].severity+"</span>";
+        }
+        if(numOfRequests!==0)
+        var chartData = [(low/numOfRequests)*100,(medium/numOfRequests)*100,(high/numOfRequests)*100,(sever/numOfRequests)*100];
         return res.json(data.rows);
-    })
-})
+    });
+});
+
+
+
+app.post('/client-Info',urlEncodedParser, function (req, res){
+    var name = req.body.clientName;
+    console.log(name);
+    client.query("SELECT * from requests where client_name='"+name+"'",function(err,data){
+        if(err){
+            throw err;
+        }
+        return res.json(data.rows);
+    });
+});
 
 app.get('/usersTable',function(req,res){
     client.query("select client_name, category, insurance_amount, previous_insurance_company, status from requests;",function(err,data){
@@ -145,9 +281,11 @@ app.get('/usersTable',function(req,res){
 
 app.post('/test',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
+    clientName =clientName.replace(/\s+/g,'').trim();
     var amount=req.body.amount;
     var severity;
-    var userData = fs.readFileSync(clientName+".json");
+    var userData = fs.readFileSync("./json/"+clientName+".json");
+    //  var userData = fs.readFileSync("./json/IsraelIsraeli.json");
     const UTF8_BOM = "\u{FEFF}";                    
     if( userData.includes(UTF8_BOM)){
         userData.subarray(1);
@@ -161,18 +299,20 @@ app.post('/test',urlEncodedParser, function (req, res) {
     var policyJsonContent =JSON.parse(policyData);
     var txt="";
     for(i in policyJsonContent){
-        // txt+=jsonContent[i][0].UserRank;
         if(policyJsonContent[i][0].UserRank==userJsonContent.UserRank){
             var id=userJsonContent.insuranceData[0].PrevinsuranceID;
             severity=i;
-            client.query("UPDATE requests SET severity="+severity+" status='Reviewed' category='Car_Insurance' due_date='1/9/2021' where previous_insurance_id="+id+"");
+            client.query("UPDATE requests SET severity='"+severity+"',category='Car Insurance',status='Reviewed',due_date='1/9/2021' where previous_insurance_id='"+id+"'",function(err,res){
+                if(err){
+                    throw err;
+                }
+            });
         }
-       
-            
     }
-   
-    console.log(severity);
-    return res.json(userJsonContent);
+
+    client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
+        return res.json(data.rows);
+    })
 })
 app.get('/yuda',urlEncodedParser, function (req, res) {
     var data = fs.readFileSync("./json/MosheCohen.json");
