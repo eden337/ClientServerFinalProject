@@ -135,7 +135,7 @@ app.get('/dashboardTable',function(req,res){
 })
 
 app.get('/usersTable',function(req,res){
-    client.query("select FirstName, LastName, insuranceType, insuranceAmountRequested, insuranceCompanyName, CarSatus, UserRank from prevInsuranceData;",function(err,data){
+    client.query("select FirstName, LastName, insuranceType, insuranceAmountRequested, insuranceCompanyName, CarSatus, UserRank from requests;",function(err,data){
         return res.json(data.rows);
     })
 })
@@ -168,22 +168,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
        
             
     }
-    //-------------------------------------------------------------------------------------
-    policyData = fs.readFileSync("./json/IsraelIsraeli.json");                  
-    if( policyData.includes(UTF8_BOM)){
-        policyData.subarray(1);
-    }
-    var jsonContent = JASON.parse(policyData);
-    client.query("INSERT INTO prevInsuranceData(FirstName) VALUES " + jsonContent.FirstName+"");
-    client.query("INSERT INTO prevInsuranceData(LastName) VALUES " + jsonContent.LastName+"");
-    client.query("INSERT INTO prevInsuranceData(insuranceType) VALUES " + jsonContent.insuranceType+"");
-    client.query("INSERT INTO prevInsuranceData(insuranceAmountRequested) VALUES " + jsonContent.insuranceAmountRequested+"");
-    client.query("INSERT INTO prevInsuranceData(insuranceCompanyName) VALUES " + jsonContent.insuranceCompanyName+"");
-    client.query("INSERT INTO prevInsuranceData(CarSatus) VALUES " + jsonContent.CarSatus+"");
-    client.query("INSERT INTO prevInsuranceData(UserRank) VALUES " + jsonContent.UserRank+"");
-
-    //-----------------------------------------------------------------------------------------------------
-
+   
     console.log(severity);
     return res.json(userJsonContent);
 })
