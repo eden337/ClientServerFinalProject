@@ -19,26 +19,26 @@ app.use('/static', express.static('./'));
 /*-----START----- postgres online
 client representing the website to declare and connect as  a client to the postgresql database
 */
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-//   });
-//   client.connect();
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  client.connect();
   /*-----END-----*/
 
   /*-----START----- postgres local*/
-  const client =new Client ({
-    host: 'localhost', // server name or IP address;
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: 'Yh321789654'
-});
-client.connect(function(err,result){
-    console.log("Connected to db");
-});
+//   const client =new Client ({
+//     host: 'localhost', // server name or IP address;
+//     port: 5432,
+//     database: 'postgres',
+//     user: 'postgres',
+//     password: 'Yh321789654'
+// });
+// client.connect(function(err,result){
+//     console.log("Connected to db");
+// });
   /*-----END-----*/
 
 
@@ -134,6 +134,12 @@ app.get('/dashboardTable',function(req,res){
     })
 })
 
+app.get('/usersTable',function(req,res){
+    client.query("select FirstName, LastName, insuranceType, insuranceAmountRequested, insuranceCompanyName, CarSatus, UserRank from prevInsuranceData;",function(err,data){
+        return res.json(data.rows);
+    })
+})
+
 
 app.post('/test',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
@@ -162,6 +168,22 @@ app.post('/test',urlEncodedParser, function (req, res) {
        
             
     }
+    //-------------------------------------------------------------------------------------
+    policyData = fs.readFileSync("./json/IsraelIsraeli.json");                  
+    if( policyData.includes(UTF8_BOM)){
+        policyData.subarray(1);
+    }
+    var jsonContent = JASON.parse(policyData);
+    client.query("INSERT INTO prevInsuranceData(FirstName) VALUES " + jsonContent.FirstName+"");
+    client.query("INSERT INTO prevInsuranceData(LastName) VALUES " + jsonContent.LastName+"");
+    client.query("INSERT INTO prevInsuranceData(insuranceType) VALUES " + jsonContent.insuranceType+"");
+    client.query("INSERT INTO prevInsuranceData(insuranceAmountRequested) VALUES " + jsonContent.insuranceAmountRequested+"");
+    client.query("INSERT INTO prevInsuranceData(insuranceCompanyName) VALUES " + jsonContent.insuranceCompanyName+"");
+    client.query("INSERT INTO prevInsuranceData(CarSatus) VALUES " + jsonContent.CarSatus+"");
+    client.query("INSERT INTO prevInsuranceData(UserRank) VALUES " + jsonContent.UserRank+"");
+
+    //-----------------------------------------------------------------------------------------------------
+
     console.log(severity);
     return res.json(userJsonContent);
 })
