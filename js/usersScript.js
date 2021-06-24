@@ -14,10 +14,13 @@ function loadTable(){
                     {data: "category"},
                     {data: "insurance_amount"},
                     {data: "previus_insurance_company"},
-                    {data: "Satus"},
-                    {data: "UserRank"}        
+                    {data: "Status"}
                 ]
             });
            }
     });
 }
+
+$(document).ready(function() {             
+    loadTable();
+});

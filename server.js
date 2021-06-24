@@ -19,26 +19,26 @@ app.use('/static', express.static('./'));
 /*-----START----- postgres online
 client representing the website to declare and connect as  a client to the postgresql database
 */
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  client.connect();
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+//   });
+//   client.connect();
   /*-----END-----*/
 
   /*-----START----- postgres local*/
-//   const client =new Client ({
-//     host: 'localhost', // server name or IP address;
-//     port: 5432,
-//     database: 'postgres',
-//     user: 'postgres',
-//     password: 'Yh321789654'
-// });
-// client.connect(function(err,result){
-//     console.log("Connected to db");
-// });
+  const client =new Client ({
+    host: 'localhost', // server name or IP address;
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'Spidy_@337'
+});
+client.connect(function(err,result){
+    console.log("Connected to db");
+});
   /*-----END-----*/
 
 
@@ -135,7 +135,9 @@ app.get('/dashboardTable',function(req,res){
 })
 
 app.get('/usersTable',function(req,res){
-    client.query("select client_name, insuranceType, insurance_amount, previus_insurance_company, satus, UserRank from requests;",function(err,data){
+    client.query("select client_name, category, insurance_amount, previous_insurance_company, status from requests;",function(err,data){
+        if(err)
+            throw err;
         return res.json(data.rows);
     })
 })

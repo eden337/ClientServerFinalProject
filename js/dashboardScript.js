@@ -52,11 +52,11 @@ $(document).ready(function() {
 function Calculate(body){
     $.post('/test',{clientName,amount},function(data,status){
         console.log(JSON.stringify(data));
-        severityCell.data("<span style='color:red;'>High</span>")
+        severityCell.data("<span style='color:red;'>High</span>");
         statucCell.data("eden");
-        buttonCell.data("<i class='fas fa-ellipsis-h'></i>")
+        buttonCell.data("<i class='fas fa-ellipsis-h'></i>");
 
-    })
+    });
     // var name=myTable.cell(rowIndex,2).data();
     // var amount=myTable.cell(rowIndex,3).data();
     // console.log(name);
