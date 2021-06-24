@@ -10,12 +10,11 @@ function loadTable(){
                 data: data,
                 rowId: 'Button',
                 columns: [
-                    {data: "FirstName"}, 
-                    {data: "LastName"},
-                    {data: "insuranceType"},
-                    {data: "insuranceAmountRequested"},
-                    {data: "insuranceCompanyName"},
-                    {data: "CarSatus"},
+                    {data: "client_name"},
+                    {data: "category"},
+                    {data: "insurance_amount"},
+                    {data: "previus_insurance_company"},
+                    {data: "Satus"},
                     {data: "UserRank"}        
                 ]
             });

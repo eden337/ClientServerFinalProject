@@ -135,7 +135,7 @@ app.get('/dashboardTable',function(req,res){
 })
 
 app.get('/usersTable',function(req,res){
-    client.query("select FirstName, LastName, insuranceType, insuranceAmountRequested, insuranceCompanyName, CarSatus, UserRank from requests;",function(err,data){
+    client.query("select client_name, insuranceType, insurance_amount, previus_insurance_company, satus, UserRank from requests;",function(err,data){
         return res.json(data.rows);
     })
 })
