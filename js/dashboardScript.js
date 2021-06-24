@@ -69,6 +69,7 @@ $(document).ready(function() {
 function Calculate(body){
     $.post('/test',{clientName,amount},function(data,status){
         console.log(JSON.stringify(data));
+
         var color='danger';
         console.log(data[0].severity);
         switch(data[0].severity){

@@ -270,6 +270,14 @@ app.post('/client-Info',urlEncodedParser, function (req, res){
     });
 });
 
+app.get('/usersTable',function(req,res){
+    client.query("select client_name, category, insurance_amount, previous_insurance_company, status from requests;",function(err,data){
+        if(err)
+            throw err;
+        return res.json(data.rows);
+    })
+})
+
 
 app.post('/test',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
@@ -301,6 +309,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
             });
         }
     }
+
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
         return res.json(data.rows);
     })
