@@ -26,7 +26,13 @@ function loadTable()
                 statucCell=myTable.cell(rowIndex,4);
                 dueDateCell=myTable.cell(rowIndex,5);
                 buttonCell=myTable.cell(rowIndex,6);
-                Calculate();
+                if(statucCell.data()!=="Reviewed"){
+                    Calculate();
+                }else{
+                    moreInfo();
+                }
+
+                    
               });
             myTable =  $('#dataTable').DataTable( {
                     dom: 'Bfrtip',  
@@ -43,7 +49,13 @@ function loadTable()
                         {data: "insurance_amount"},
                         {data: "status",defaultContent:'In Review'},
                         {data: "due_date",defaultContent:'1/9/2021'},
-                        {data: "Button",className:"calc-button",defaultContent:'<i class="fas fa-calculator calc-button"></i>'}
+                        {data: "Button",className:"calc-button", "render":function(data,type,row){
+                            if(row.status==='Reviewed'){
+                                return  "<i class='fas fa-ellipsis-h'></i>";
+                            }else{
+                                return '<i class="fas fa-calculator calc-button"></i>';
+                            }
+                        }}
                     ]
                     
             }); 
@@ -63,7 +75,7 @@ function Calculate(body){
             case 'Low':
                 color='success';
                 break;
-            case 'Medium':
+            case 'Mid':
                 color='secondary';
                 break;
             case 'High':
@@ -81,7 +93,7 @@ function Calculate(body){
         statucCell.data(data[0].status);
         dueDateCell.data(data[0].due_date);
         buttonCell.data("<i class='fas fa-ellipsis-h' onClick=moreInfo()></i>");
-
+        location.reload();
     });
     // var name=myTable.cell(rowIndex,2).data();
     // var amount=myTable.cell(rowIndex,3).data();
@@ -95,10 +107,13 @@ function Calculate(body){
     //     myTable.cell(rowIndex, colIndex).data("new");
     // }   
 }
-function moreInfo(){
-    
-    $.post('/client-Info'),{clientName,amount},function(data,status){
-        myTable =  $('#dataTable').DataTable( {
+
+
+function moreInfo(body){
+    $.post('/client-Info',{clientName},function(data,status){
+       
+
+        myTable =  $('#infoTable').DataTable( {
             dom: 'Bfrtip',  
             data: data,  
             rowId:'Button',
@@ -120,18 +135,20 @@ function moreInfo(){
                 {data: "severity"},
                 {data: "category"},
                 {data: "status"},
-                {data: "due_date"},
-                {data: "insuranceAmountRequested"},
-                {data: "insuranceCompanyName"},
-                {data: "RequestNumber"},
-                {data: "insuranceCompanyfee"},
-                {data: "insuranceEnable"},
-                {data: "dateofEnblment"},
-                {data: "CarStatus"},
-                {data: "UserRank"},
-                {data: "message"}
+                {data: "due_date"}
+                // {data: "insuranceCompanyName"},
+                // {data: "RequestNumber"},
+                // {data: "insuranceCompanyfee"},
+                // {data: "insuranceEnable"},
+                // {data: "dateofEnblment"},
+                // {data: "CarStatus"},
+                // {data: "UserRank"},
+                // {data: "message"}
             ]
             
     }); 
-    }
+
+    });
+    $("#dataTable").DataTable().destroy();
+    loadTable();
 }

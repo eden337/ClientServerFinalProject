@@ -60,7 +60,7 @@ app.get('/new_insurance', function (req, res) {
 })
 app.get('/thankyou',function(req,res){
     res.sendFile(path.join(__dirname, '/html/thankyou.html'));
-})
+});
 /*  Finished working in local
     Need to check online*/
 app.post('/send-request',urlEncodedParser,function(req,res){
@@ -84,12 +84,48 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var pre_ins_id=req.body.pre_ins_id2;
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
+    var userRank = randomInt(1,4);
+    
+    let user={
+        "insuranceType": "CarInsurance",
+        "FirstName": req.body.fname2,
+        "LastName": req.body.lname2,
+        "insuranceAmountRequested": ins_amount,
+        "insuranceCompanyName": "Harel",
+        "insuranceData": [
+        {
+            "companyUserId": 123,
+            "PrevinsuranceCompanyName": pre_ins_comp,
+            "RequestNumber": 5578,
+            "Previousinsurancenumber": pre_ins_num,        
+            "PrevinsuranceID": pre_ins_id,
+            "insuranceCompanyfee": "10"
+        }
+        
+    ],
+        "insuranceEnable": 1, 
+        "dateofEnblment": 10042022,
+        "CarStatus": "accident",
+        "UserRank": ""+userRank+"" ,
+        "comment": comment,
+        "message": "accident with car Golf in Tel Aviv"
+    };
+
+    fs.writeFile("./json/"+req.body.fname2+req.body.lname2+".json",JSON.stringify(user,null,2),function(err,res){
+        if(err)
+        {
+            throw err;
+        }
+    });
+
+
     client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
     " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
         if(err){
             throw err;
         }
         console.log(request_id);
+
         res.send('/thankyou');
     });
     
@@ -153,7 +189,7 @@ app.get('/piechart',function(req,res){
                     low++;
                     numOfRequests++;
                     break;
-                case 'Medium':
+                case 'Mid':
                     medium++;
                     numOfRequests++;
                     break;
@@ -193,7 +229,7 @@ app.get('/dashboardTable',function(req,res){
                     numOfRequests++;
                     badgeColor='success';
                     break;
-                case 'Medium':
+                case 'Mid':
                     medium++;
                     numOfRequests++;
                     badgeColor='secondary';
@@ -221,11 +257,17 @@ app.get('/dashboardTable',function(req,res){
     });
 });
 
-app.post('/client-Info',urlEncodedParser,function(req,res){
-    client.query("SELECT * from requests where request_id='5060'",function(err,data){
-        console.log(data.rows);
+
+
+app.post('/client-Info',urlEncodedParser, function (req, res){
+    var name = req.body.clientName;
+    console.log(name);
+    client.query("SELECT * from requests where client_name='"+name+"'",function(err,data){
+        if(err){
+            throw err;
+        }
         return res.json(data.rows);
-    })
+    });
 });
 
 
