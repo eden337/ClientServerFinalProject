@@ -3,3 +3,9 @@
   border-radius: 10rem;
   padding: 0rem 1rem;
 }
+
+.bg-register-image-custom{
+  background: url("https://content.fortune.com/wp-content/uploads/2014/07/176507604.jpg");
+  background-position: center;
+  background-size: cover;
+}
