@@ -1,4 +1,5 @@
 var myTable;
+var moreInfoTable;
 var severityCell;
 var statucCell;
 var buttonCell;
@@ -65,6 +66,43 @@ function loadTable()
 }
 $(document).ready(function() {  
     loadTable();
+    
+    moreInfoTable =  $('#infoTable').DataTable( {
+        dom: 'Bfrtip',  
+        // data: data,  
+        rowId:'Button',
+        "searching": false,
+        buttons:[{
+            extend: 'create',
+            name: 'testj2e'
+        }],                    
+        // columns: [
+        //     // {data: "request_id" },
+        //     // {data: "social"},
+        //     // {data: "client_name"},
+        //     // {data: "email"},
+        //     // {data: "phone"},
+        //     // {data: "insurance_amount"},
+        //     // {data: "previous_insurance_number"},
+        //     // {data: "previous_insurance_id"},
+        //     // {data: "previous_insurance_company"},
+        //     // {data: "comment"},
+        //     // {data: "severity"},
+        //     // {data: "category"},
+        //     // {data: "status"},
+        //     // {data: "due_date"}
+        //     // {data: "insuranceCompanyName"},
+        //     // {data: "RequestNumber"},
+        //     // {data: "insuranceCompanyfee"},
+        //     // {data: "insuranceEnable"},
+        //     // {data: "dateofEnblment"},
+        //     // {data: "CarStatus"},
+        //     // {data: "UserRank"},
+        //     // {data: "message"}
+        // ]
+        
+}); 
+
 });
 function Calculate(body){
     $.post('/test',{clientName,amount},function(data,status){
@@ -111,49 +149,63 @@ function Calculate(body){
 
 
 function moreInfo(body){
-
     $.post('/client-Info',{clientName},function(data,status){
-        console.log(data[0].request_id);
-        var $row = $(this).closest("tr");
-        var rowContent='<tr><td>${row.request_id}</td></tr>';
-        $("#infoTable").append(rowContent);
+        // moreInfoTable.data = data;
+        // moreInfoTable.columns([
+        //         {data: "request_id" },
+        //         {data: "social"},
+        //         {data: "client_name"},
+        //         {data: "email"},
+        //         {data: "phone"},
+        //         {data: "insurance_amount"},
+        //         {data: "previous_insurance_number"},
+        //         {data: "previous_insurance_id"},
+        //         {data: "previous_insurance_company"},
+        //         {data: "comment"},
+        //         {data: "severity"},
+        //         {data: "category"},
+        //         {data: "status"},
+        //         {data: "due_date"}
+        //         // {data: "insuranceCompanyName"},
+        //         // {data: "RequestNumber"},
+        //         // {data: "insuranceCompanyfee"},
+        //         // {data: "insuranceEnable"},
+        //         // {data: "dateofEnblment"},
+        //         // {data: "CarStatus"},
+        //         // {data: "UserRank"},
+        //         // {data: "message"}
+        //     ]);
+        
+
+        var rowContent='<tr><td>'+data[0].request_id+'</td>'+
+        '<td>'+data[0].social+'</td>'+
+        '<td>'+data[0].client_name+'</td>'+
+        '<td>'+data[0].email+'</td>'+
+        '<td>'+data[0].phone+'</td>'+
+        '<td>'+data[0].insurance_amount+'</td>'+
+        '<td>'+data[0].previous_insurance_number+'</td>'+
+        '<td>'+data[0].previous_insurance_id+'</td>'+
+        '<td>'+data[0].previous_insurance_company+'</td>'+
+        '<td>'+data[0].comment+'</td>'+
+        '<td>'+data[0].severity+'</td>'+
+        '<td>'+data[0].category+'</td>'+
+        '<td>'+data[0].status+'</td>'+
+        '<td>'+data[0].due_date+'</td>'+
+        '<td>'+data[0].insuranceCompanyName+'</td>'+
+        '<td>'+data[0].RequestNumber+'</td>'+
+        '<td>'+data[0].insuranceCompanyfee+'</td>'+
+        '<td>'+data[0].insuranceEnable+'</td>'+
+        '<td>'+data[0].dateofEnblment+'</td>'+
+        '<td>'+data[0].CarStatus+'</td>'+
+        '<td>'+data[0].UserRank+'</td>'+
+        '<td>'+data[0].message+'</td>'+
+        '</tr>';
+        $('#infoTable').append(rowContent);
+        $('#infoTable')[0].rows[1].remove();
 
 
 
-    //     myTable =  $('#infoTable').DataTable( {
-    //         dom: 'Bfrtip',  
-    //         data: data,  
-    //         rowId:'Button',
-    //         buttons:[{
-    //             extend: 'create',
-    //             name: 'testj2e'
-    //         }],                    
-    //         columns: [
-    //             {data: "request_id" },
-    //             {data: "social"},
-    //             {data: "client_name"},
-    //             {data: "email"},
-    //             {data: "phone"},
-    //             {data: "insurance_amount"},
-    //             {data: "previous_insurance_number"},
-    //             {data: "previous_insurance_id"},
-    //             {data: "previous_insurance_company"},
-    //             {data: "comment"},
-    //             {data: "severity"},
-    //             {data: "category"},
-    //             {data: "status"},
-    //             {data: "due_date"}
-    //             // {data: "insuranceCompanyName"},
-    //             // {data: "RequestNumber"},
-    //             // {data: "insuranceCompanyfee"},
-    //             // {data: "insuranceEnable"},
-    //             // {data: "dateofEnblment"},
-    //             // {data: "CarStatus"},
-    //             // {data: "UserRank"},
-    //             // {data: "message"}
-    //         ]
-            
-    // }); 
+   
 
     });
     // $("#dataTable").DataTable().destroy();
