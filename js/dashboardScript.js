@@ -82,7 +82,6 @@ $(document).ready(function() {
 function Calculate(body){
     $.post('/test',{clientName,amount},function(data,status){
         console.log(JSON.stringify(data));
-
         var color='danger';
         console.log(data[0].severity);
         switch(data[0].severity){
@@ -115,7 +114,7 @@ function Calculate(body){
 function moreInfo(body){
     $.post('/client-Info',{clientName},function(data,status){
 
-
+        console.log(data[0]);
         var rowContent='<tr><td>'+data[0].request_id+'</td>'+
         '<td>'+data[0].social+'</td>'+
         '<td>'+data[0].client_name+'</td>'+
@@ -130,13 +129,13 @@ function moreInfo(body){
         '<td>'+data[0].category+'</td>'+
         '<td>'+data[0].status+'</td>'+
         '<td>'+data[0].due_date+'</td>'+
-        '<td>'+data[0].insuranceCompanyName+'</td>'+
-        '<td>'+data[0].RequestNumber+'</td>'+
+        '<td>'+data[0].previous_insurance_company+'</td>'+
+        '<td>'+data[0].prevrequestnumber+'</td>'+
         '<td>'+data[0].insuranceCompanyfee+'</td>'+
-        '<td>'+data[0].insuranceEnable+'</td>'+
-        '<td>'+data[0].dateofEnblment+'</td>'+
+        '<td>'+data[0].insuranceenable+'</td>'+
+        '<td>'+data[0].dateofenblment+'</td>'+
         '<td>'+data[0].CarStatus+'</td>'+
-        '<td>'+data[0].UserRank+'</td>'+
+        '<td>'+data[0].userrank+'</td>'+
         '<td>'+data[0].message+'</td>'+
         '</tr>';
         $('#infoTable').append(rowContent);

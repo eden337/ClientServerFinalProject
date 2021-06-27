@@ -7,6 +7,7 @@ const { Client } = require('pg');
 
 var bodyParser = require('body-parser');
 const { randomInt } = require('crypto');
+const { response } = require('express');
 //Port of web or 8080 in localHOST
 var PORT = process.env.PORT || 8080
 //Used to parse data on POST
@@ -87,47 +88,72 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
     var userRank = randomInt(1,5);
-    
-    let user={
-        "insuranceType": "CarInsurance",
-        "FirstName": req.body.fname2,
-        "LastName": req.body.lname2,
-        "insuranceAmountRequested": ins_amount,
-        "insuranceCompanyName": "Harel",
-        "insuranceData": [
-        {
-            "companyUserId": 123,
-            "PrevinsuranceCompanyName": pre_ins_comp,
-            "RequestNumber": 5578,
-            "Previousinsurancenumber": pre_ins_num,        
-            "PrevinsuranceID": pre_ins_id,
-            "insuranceCompanyfee": "10"
-        }
-        
-    ],
-        "insuranceEnable": 1, 
-        "dateofEnblment": 10042022,
-        "CarStatus": "accident",
-        "UserRank": ""+userRank+"" ,
-        "comment": comment,
-        "message": "accident with car Golf in Tel Aviv"
-    };
+    var user={};
+    var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, PrevRequestNumber, insuranceEnable,dateofEnblment,userrank,message) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)";
 
-    fs.writeFile("./json/"+req.body.fname2+req.body.lname2+".json",JSON.stringify(user,null,2),function(err,res){
-        if(err)
-        {
-            throw err;
-        }
-    });
-    
-    
-    client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,userrank)"+
-    " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"',"+userRank+")",function(err,result){
+    if(name==="Yossi Lavi"||name === "Israel Israeli" || name ==="Moshe Cohen"){
+        fs.readFile('./json/'+req.body.fname2+req.body.lname2+'.json', 'utf8', (err, jsonString) => {
+            if (err) {
+                console.log("Error reading file from disk:", err);
+                return;
+            }
+            try {
+                user = JSON.parse(jsonString);
+                var values=[request_id, name, social, email,mobile,user.insuranceAmountRequested+"$",user.insuranceData[0].Previousinsurancenumber,user.insuranceData[0].PrevinsuranceID,user.insuranceData[0].PrevinsuranceCompanyName,user.comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message];
+                
+                client.query(sql,values,function(err,res){
+                if(err){
+                    throw err;
+                }
+                });
+                
+        } catch(err) {
+                console.log('Error parsing JSON string:', err);
+            }
+        });
+    }
+    else{
+            user={
+            "insuranceType": "CarInsurance",
+            "FirstName": req.body.fname2,
+            "LastName": req.body.lname2,
+            "insuranceAmountRequested": ins_amount,
+            "insuranceCompanyName": "Harel",
+            "insuranceData": [
+            {
+                "companyUserId": 123,
+                "PrevinsuranceCompanyName": pre_ins_comp,
+                "RequestNumber": 5578,
+                "Previousinsurancenumber": pre_ins_num,        
+                "PrevinsuranceID": pre_ins_id,
+                "insuranceCompanyfee": "10"
+            }
+            
+        ],
+            "insuranceEnable": 1, 
+            "dateofEnblment": 10042022,
+            "CarStatus": "accident",
+            "UserRank": ""+userRank+"" ,
+            "comment": comment,
+            "message": "accident with car Golf in Tel Aviv"
+        };
+
+        fs.writeFile("./json/"+req.body.fname2+req.body.lname2+".json",JSON.stringify(user,null,2),function(err,res){
+            if(err)
+            {
+                throw err;
+                
+            }
+        });
+  
+        var values=[request_id, name, social, email,mobile,ins_amount+"$",pre_ins_num,pre_ins_id,pre_ins_comp,comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message];
+        client.query(sql,values,function(err,res){
         if(err){
             throw err;
         }
-        res.send('/thankyou');
-    });
+        });
+    }
+    res.send('/thankyou');
     
 });
 /*  Finished working in local
@@ -143,7 +169,7 @@ app.post('/DB-login',urlEncodedParser,function(req,res){
                 if(user===data.rows[i].name && pass===data.rows[i].password){
                     return res.send("/dashboard");
                 }
-            res.send("not ok")
+            res.send("not ok");
     });
 })
 
@@ -177,7 +203,7 @@ app.post('/calculate', function (req, res) {
     // }
     // console.log(jsonContent.UserRank +" "+ res.get("eden"));
     return res.json(jsonContent);
-})
+});
 
 app.get('/piechart',function(req,res){
     var low =0;
@@ -209,7 +235,7 @@ app.get('/piechart',function(req,res){
                     break;
             }
         }
-        var charData=[];
+        var chartData=[];
         if(numOfRequests!==0)
             chartData = [(low/numOfRequests)*100,(medium/numOfRequests)*100,(high/numOfRequests)*100,(sever/numOfRequests)*100];
 
@@ -290,13 +316,13 @@ app.post('/test',urlEncodedParser, function (req, res) {
     var amount=req.body.amount;
     var severity;
     var userData = fs.readFileSync("./json/"+clientName+".json");
+    
     //  var userData = fs.readFileSync("./json/IsraelIsraeli.json");
     const UTF8_BOM = "\u{FEFF}";                    
     if( userData.includes(UTF8_BOM)){
         userData.subarray(1);
     }
     var userJsonContent =JSON.parse(userData);
-
     var policyData = fs.readFileSync("./json/Policy.json");                  
     if( policyData.includes(UTF8_BOM)){
         policyData.subarray(1);
@@ -317,6 +343,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
 
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
         if(err){throw err;}
+        console.log(data.rows);
         return res.json(data.rows);
     })
 })
