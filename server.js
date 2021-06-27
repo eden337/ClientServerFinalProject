@@ -275,8 +275,8 @@ app.get('/usersTable',function(req,res){
         if(err)
             throw err;
         return res.json(data.rows);
-    })
-})
+    });
+});
 
 
 app.post('/test',urlEncodedParser, function (req, res) {

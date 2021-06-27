@@ -15,7 +15,6 @@ $.get('/piechart',function(data,status){
   countMedium= data.medium;
   countHigh = data.high;
   countSever = data.sever;
-  console.log(countHigh);
   var myPieChart = new Chart(ctx, {
     type: 'doughnut',
     data: {

@@ -111,45 +111,51 @@ function Calculate(body){
 
 
 function moreInfo(body){
-    $.post('/client-Info',{clientName},function(data,status){
-       
 
-        myTable =  $('#infoTable').DataTable( {
-            dom: 'Bfrtip',  
-            data: data,  
-            rowId:'Button',
-            buttons:[{
-                extend: 'create',
-                name: 'testj2e'
-            }],                    
-            columns: [
-                {data: "request_id" },
-                {data: "social"},
-                {data: "client_name"},
-                {data: "email"},
-                {data: "phone"},
-                {data: "insurance_amount"},
-                {data: "previous_insurance_number"},
-                {data: "previous_insurance_id"},
-                {data: "previous_insurance_company"},
-                {data: "comment"},
-                {data: "severity"},
-                {data: "category"},
-                {data: "status"},
-                {data: "due_date"}
-                // {data: "insuranceCompanyName"},
-                // {data: "RequestNumber"},
-                // {data: "insuranceCompanyfee"},
-                // {data: "insuranceEnable"},
-                // {data: "dateofEnblment"},
-                // {data: "CarStatus"},
-                // {data: "UserRank"},
-                // {data: "message"}
-            ]
+    $.post('/client-Info',{clientName},function(data,status){
+        console.log(data[0].request_id);
+        var $row = $(this).closest("tr");
+        var rowContent='<tr><td>${row.request_id}</td></tr>';
+        $("#infoTable").append(rowContent);
+
+
+
+    //     myTable =  $('#infoTable').DataTable( {
+    //         dom: 'Bfrtip',  
+    //         data: data,  
+    //         rowId:'Button',
+    //         buttons:[{
+    //             extend: 'create',
+    //             name: 'testj2e'
+    //         }],                    
+    //         columns: [
+    //             {data: "request_id" },
+    //             {data: "social"},
+    //             {data: "client_name"},
+    //             {data: "email"},
+    //             {data: "phone"},
+    //             {data: "insurance_amount"},
+    //             {data: "previous_insurance_number"},
+    //             {data: "previous_insurance_id"},
+    //             {data: "previous_insurance_company"},
+    //             {data: "comment"},
+    //             {data: "severity"},
+    //             {data: "category"},
+    //             {data: "status"},
+    //             {data: "due_date"}
+    //             // {data: "insuranceCompanyName"},
+    //             // {data: "RequestNumber"},
+    //             // {data: "insuranceCompanyfee"},
+    //             // {data: "insuranceEnable"},
+    //             // {data: "dateofEnblment"},
+    //             // {data: "CarStatus"},
+    //             // {data: "UserRank"},
+    //             // {data: "message"}
+    //         ]
             
-    }); 
+    // }); 
 
     });
-    $("#dataTable").DataTable().destroy();
-    loadTable();
+    // $("#dataTable").DataTable().destroy();
+    // loadTable();
 }

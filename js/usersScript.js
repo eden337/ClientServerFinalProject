@@ -5,7 +5,7 @@ function loadTable(){
         method: 'get',
         dataType: 'json',
         success: function(data){
-            myTable = $('#dataTable').DataTable({
+            myTable = $('#usersTable').DataTable({
                 dom: 'Bfrtip',
                 data: data,
                 rowId: 'Button',
@@ -13,8 +13,8 @@ function loadTable(){
                     {data: "client_name"},
                     {data: "category"},
                     {data: "insurance_amount"},
-                    {data: "previus_insurance_company"},
-                    {data: "Status"}
+                    {data: "previous_insurance_company"},
+                    {data: "status"}
                 ]
             });
            }

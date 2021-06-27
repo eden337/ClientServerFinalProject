@@ -1,0 +1,23 @@
+{
+  "insuranceType": "CarInsurance",
+  "FirstName": "esda",
+  "LastName": "edasd",
+  "insuranceAmountRequested": "21545120",
+  "insuranceCompanyName": "Harel",
+  "insuranceData": [
+    {
+      "companyUserId": 123,
+      "PrevinsuranceCompanyName": "Migdal",
+      "RequestNumber": 5578,
+      "Previousinsurancenumber": "1541521241",
+      "PrevinsuranceID": "5156165154",
+      "insuranceCompanyfee": "10"
+    }
+  ],
+  "insuranceEnable": 1,
+  "dateofEnblment": 10042022,
+  "CarStatus": "accident",
+  "UserRank": "2",
+  "comment": "xfsdafasf",
+  "message": "accident with car Golf in Tel Aviv"
+}
