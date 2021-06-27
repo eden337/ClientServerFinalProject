@@ -68,38 +68,13 @@ $(document).ready(function() {
     loadTable();
     
     moreInfoTable =  $('#infoTable').DataTable( {
-        dom: 'Bfrtip',  
-        // data: data,  
+        dom: 'Bfrtip',   
         rowId:'Button',
         "searching": false,
         buttons:[{
             extend: 'create',
             name: 'testj2e'
-        }],                    
-        // columns: [
-        //     // {data: "request_id" },
-        //     // {data: "social"},
-        //     // {data: "client_name"},
-        //     // {data: "email"},
-        //     // {data: "phone"},
-        //     // {data: "insurance_amount"},
-        //     // {data: "previous_insurance_number"},
-        //     // {data: "previous_insurance_id"},
-        //     // {data: "previous_insurance_company"},
-        //     // {data: "comment"},
-        //     // {data: "severity"},
-        //     // {data: "category"},
-        //     // {data: "status"},
-        //     // {data: "due_date"}
-        //     // {data: "insuranceCompanyName"},
-        //     // {data: "RequestNumber"},
-        //     // {data: "insuranceCompanyfee"},
-        //     // {data: "insuranceEnable"},
-        //     // {data: "dateofEnblment"},
-        //     // {data: "CarStatus"},
-        //     // {data: "UserRank"},
-        //     // {data: "message"}
-        // ]
+        }]                  
         
 }); 
 
@@ -134,48 +109,12 @@ function Calculate(body){
         buttonCell.data("<i class='fas fa-ellipsis-h' onClick=moreInfo()></i>");
         location.reload();
     });
-    // var name=myTable.cell(rowIndex,2).data();
-    // var amount=myTable.cell(rowIndex,3).data();
-    // console.log(name);
-    // $.post('/calculate',name,function(data,status){
-    //     console.log(data);    
-    //     myTable.cell(rowIndex,0).data("severe");
-    // })
-    // console.log(name);
-    // if(rowIndex!=null && colIndex!=null){
-    //     myTable.cell(rowIndex, colIndex).data("new");
-    // }   
 }
 
 
 function moreInfo(body){
     $.post('/client-Info',{clientName},function(data,status){
-        // moreInfoTable.data = data;
-        // moreInfoTable.columns([
-        //         {data: "request_id" },
-        //         {data: "social"},
-        //         {data: "client_name"},
-        //         {data: "email"},
-        //         {data: "phone"},
-        //         {data: "insurance_amount"},
-        //         {data: "previous_insurance_number"},
-        //         {data: "previous_insurance_id"},
-        //         {data: "previous_insurance_company"},
-        //         {data: "comment"},
-        //         {data: "severity"},
-        //         {data: "category"},
-        //         {data: "status"},
-        //         {data: "due_date"}
-        //         // {data: "insuranceCompanyName"},
-        //         // {data: "RequestNumber"},
-        //         // {data: "insuranceCompanyfee"},
-        //         // {data: "insuranceEnable"},
-        //         // {data: "dateofEnblment"},
-        //         // {data: "CarStatus"},
-        //         // {data: "UserRank"},
-        //         // {data: "message"}
-        //     ]);
-        
+
 
         var rowContent='<tr><td>'+data[0].request_id+'</td>'+
         '<td>'+data[0].social+'</td>'+

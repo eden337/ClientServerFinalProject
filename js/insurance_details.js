@@ -219,7 +219,7 @@ function validate(val)
             $.post('/send-request',{fname2,lname2,email2,mobile2,social_num2,ins_amount2,pre_ins_num2,pre_ins_id2,pre_ins_comp2,comment2},function(data,textstatus){
                 console.log(data);
                 window.location=data;
-            })
+            });
         }   
         return true;
     }

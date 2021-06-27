@@ -65,8 +65,10 @@ app.get('/thankyou',function(req,res){
     Need to check online*/
 app.post('/send-request',urlEncodedParser,function(req,res){
     var request_id=randomInt(1,10000);
-    console.log(request_id);
     client.query("select * from requests where request_id ='"+request_id+"'",function(err,data){
+        if(err){
+            throw err;
+        }
        // console.log(data.rows[0]);
         if(data!==null){
             //console.log("entered");
@@ -78,13 +80,13 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
-    var mobile=req.body.mob2;
+    var mobile=req.body.mobile2;
     var ins_amount=req.body.ins_amount2;
     var pre_ins_num=req.body.pre_ins_num2;
     var pre_ins_id=req.body.pre_ins_id2;
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
-    var userRank = randomInt(1,4);
+    var userRank = randomInt(1,5);
     
     let user={
         "insuranceType": "CarInsurance",
@@ -117,15 +119,13 @@ app.post('/send-request',urlEncodedParser,function(req,res){
             throw err;
         }
     });
-
-
-    client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment)"+
-    " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"')",function(err,result){
+    
+    
+    client.query("insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,userrank)"+
+    " values"+" ('"+request_id+"',"+"'"+name+"','"+social+"','"+email+"','"+mobile+"','"+ins_amount+"$','"+pre_ins_num+"','"+pre_ins_id+"','"+pre_ins_comp+"','"+comment+"',"+userRank+")",function(err,result){
         if(err){
             throw err;
         }
-        console.log(request_id);
-
         res.send('/thankyou');
     });
     
@@ -136,6 +136,9 @@ app.post('/DB-login',urlEncodedParser,function(req,res){
     var user=req.body.email;
     var pass=req.body.pass;
         client.query("select * from users;",function(err,data){
+            if(err){
+                throw err;
+            }
             for(var i=0;i<data.rows.length;i++)
                 if(user===data.rows[i].name && pass===data.rows[i].password){
                     return res.send("/dashboard");
@@ -183,6 +186,7 @@ app.get('/piechart',function(req,res){
     var sever=0;
     var numOfRequests=0;
     client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        if(err){throw err;}
         for(var i=0;i<data.rowCount;i++){
             switch(data.rows[i].severity){
                 case 'Low':
@@ -221,6 +225,7 @@ app.get('/dashboardTable',function(req,res){
     var sever=0;
     var numOfRequests=0;
     client.query("select client_name,insurance_amount,severity,category,status,due_date from requests;",function(err,data){
+        if(err){throw err;}
         for(var i=0;i<data.rowCount;i++){
             var badgeColor = 'light';
             switch(data.rows[i].severity){
@@ -311,6 +316,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
     }
 
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
+        if(err){throw err;}
         return res.json(data.rows);
     })
 })
