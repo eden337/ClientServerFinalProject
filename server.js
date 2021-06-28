@@ -24,24 +24,24 @@ app.use('/static', express.static('./'));
 client representing the website to declare and connect as  a client to the postgresql database
 */
 
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: {
-//       rejectUnauthorized: false
-//     }
-//   });
-//   client.connect();
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
+  });
+  client.connect();
   /*-----END-----*/
 
   /*-----START----- postgres local*/
 
-  const client =new Client ({
-    host: 'localhost', // server name or IP address;
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: 'Spidy_@337'
-});
+//   const client =new Client ({
+//     host: 'localhost', // server name or IP address;
+//     port: 5432,
+//     database: 'postgres',
+//     user: 'postgres',
+//     password: 'Spidy_@337'
+// });
 client.connect(function(err,result){
     console.log("Connected to db");
 });
