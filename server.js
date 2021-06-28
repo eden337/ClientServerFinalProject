@@ -43,9 +43,9 @@ const client = new Client({
 //     password: 'Yh321789654'
 // });
 client.connect(function(err,result){
-    if(err){
-        throw err;
-    }
+    // if(err){
+    //     throw err;
+    // }
     console.log("Connected to db");
 });
   /*-----END-----*/
