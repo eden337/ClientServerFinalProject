@@ -316,14 +316,14 @@ app.post('/test',urlEncodedParser, function (req, res) {
     var amount=req.body.amount;
     var severity;
     var userData = fs.readFileSync("./json/"+clientName+".json");
-    
+    var id;
     //  var userData = fs.readFileSync("./json/IsraelIsraeli.json");
     const UTF8_BOM = "\u{FEFF}";                    
     if( userData.includes(UTF8_BOM)){
         userData.subarray(1);
     }
     var userJsonContent =JSON.parse(userData);
-    console.log("userContent "+userJsonContent);
+    
     var policyData = fs.readFileSync("./json/Policy.json");                  
     if( policyData.includes(UTF8_BOM)){
         policyData.subarray(1);
@@ -332,7 +332,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
     var txt="";
     for(i in policyJsonContent){
         if(policyJsonContent[i][0].UserRank==userJsonContent.UserRank){
-            var id=userJsonContent.insuranceData[0].PrevinsuranceID;
+            id=userJsonContent.insuranceData[0].PrevinsuranceID;
             severity=i;
             client.query("UPDATE requests SET severity='"+severity+"',category='Car Insurance',status='Reviewed',due_date='1/9/2021' where previous_insurance_id='"+id+"'",function(err,res){
                 if(err){
@@ -341,7 +341,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
             });
         }
     }
-
+    console.log("id "+id);
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
         if(err){throw err;}
         console.log(data.rows);
