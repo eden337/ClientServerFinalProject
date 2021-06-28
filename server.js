@@ -2,6 +2,11 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var fs=require('fs');
+
+var crypto=require('crypto');
+var md5sum=crypto.createHash('md5');
+var hash=md5sum.update('1234').digest('hex');
+
 /*ONLINE DB*/
 const { Client } = require('pg');
 
@@ -173,7 +178,7 @@ app.post('/DB-login',urlEncodedParser,function(req,res){
                 throw err;
             }
             for(var i=0;i<data.rows.length;i++)
-                if(user===data.rows[i].name && pass===data.rows[i].password){
+                if(user===data.rows[i].name && hash===data.rows[i].password){
                     return res.send("/dashboard");
                 }
             res.send("not ok");
@@ -356,21 +361,8 @@ app.post('/test',urlEncodedParser, function (req, res) {
     })
 })
 app.get('/yuda',urlEncodedParser, function (req, res) {
-    var data = fs.readFileSync("./json/MosheCohen.json");
-    const UTF8_BOM = "\u{FEFF}";                    
-    if( data.includes(UTF8_BOM)){
-        data.subarray(1);
-    }
-    var jsonContent =JSON.parse(data);
-    var txt="";
-    // for(i in jsonContent){
-    //     // txt+=jsonContent[i][0].UserRank;
-    //     if(jsonContent[i][0].UserRank==4)
-    //         txt="yuidad";
-    // }
-    txt=jsonContent.insuranceData[0].companyUserId;
-        
-    res.json(txt);
+    console.log(hash);
+    return res.send(hash);
 })
 
 
