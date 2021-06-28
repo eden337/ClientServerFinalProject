@@ -99,7 +99,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var comment=req.body.comment2;
     var userRank = randomInt(1,5);
     var user={};
-    var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, PrevRequestNumber, insuranceEnable,dateofEnblment,userrank,message) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)";
+    var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, PrevRequestNumber, insuranceEnable,dateofEnblment,userrank,message,insurancecompanyfee) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)";
     const path ='./json/'+req.body.fname2+req.body.lname2+'.json';
     
     //if(name==="Yossi Lavi"||name === "Israel Israeli" || name ==="Moshe Cohen"){
@@ -111,7 +111,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
             }
             try {
                 user = JSON.parse(jsonString);
-                var values=[request_id, name, social, email,mobile,user.insuranceAmountRequested+"$",user.insuranceData[0].Previousinsurancenumber,user.insuranceData[0].PrevinsuranceID,user.insuranceData[0].PrevinsuranceCompanyName,user.comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message];
+                var values=[request_id, name, social, email,mobile,user.insuranceAmountRequested+"$",user.insuranceData[0].Previousinsurancenumber,user.insuranceData[0].PrevinsuranceID,user.insuranceData[0].PrevinsuranceCompanyName,user.comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message,user.insuranceData[0].insuranceCompanyfee];
                 
                 client.query(sql,values,function(err,res){
                 if(err){
@@ -158,7 +158,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
             }
         });
   
-        var values=[request_id, name, social, email,mobile,ins_amount+"$",pre_ins_num,pre_ins_id,pre_ins_comp,comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message];
+        var values=[request_id, name, social, email,mobile,ins_amount+"$",pre_ins_num,pre_ins_id,pre_ins_comp,comment,user.insuranceType, ""+user.insuranceCompanyName+"", user.insuranceData[0].RequestNumber,user.insuranceEnable,user.dateofEnblment,user.UserRank,user.message,user.insuranceData[0].insuranceCompanyfee];
         client.query(sql,values,function(err,res){
         if(err){
             throw err;
