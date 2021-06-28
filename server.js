@@ -341,7 +341,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
             });
         }
     }
-    console.log("id "+userJsonContent.insuranceData[0]);
+    console.log(userJsonContent.insuranceData[0]);
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
         if(err){throw err;}
         console.log(data.rows);
