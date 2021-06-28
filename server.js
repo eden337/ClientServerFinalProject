@@ -90,9 +90,11 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var userRank = randomInt(1,5);
     var user={};
     var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, PrevRequestNumber, insuranceEnable,dateofEnblment,userrank,message) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)";
-
-    if(name==="Yossi Lavi"||name === "Israel Israeli" || name ==="Moshe Cohen"){
-        fs.readFile('./json/'+req.body.fname2+req.body.lname2+'.json', 'utf8', (err, jsonString) => {
+    const path ='./json/'+req.body.fname2+req.body.lname2+'.json';
+    
+    //if(name==="Yossi Lavi"||name === "Israel Israeli" || name ==="Moshe Cohen"){
+        if(fs.existsSync(path)){
+        fs.readFile(path, 'utf8', (err, jsonString) => {
             if (err) {
                 console.log("Error reading file from disk:", err);
                 return;
