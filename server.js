@@ -323,6 +323,7 @@ app.post('/test',urlEncodedParser, function (req, res) {
         userData.subarray(1);
     }
     var userJsonContent =JSON.parse(userData);
+    console.log(userJsonContent);
     var policyData = fs.readFileSync("./json/Policy.json");                  
     if( policyData.includes(UTF8_BOM)){
         policyData.subarray(1);
