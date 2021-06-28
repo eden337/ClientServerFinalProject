@@ -80,7 +80,7 @@ $(document).ready(function() {
 
 });
 function Calculate(body){
-    $.post('/test',{clientName,amount},function(data,status){
+    $.post('/calculate',{clientName},function(data,status){
         console.log(JSON.stringify(data));
         var color='danger';
         console.log(data[0].severity);
@@ -114,7 +114,7 @@ function Calculate(body){
 function moreInfo(body){
     $.post('/client-Info',{clientName},function(data,status){
 
-        console.log(data[0]);
+        console.log(data[0].userrank);
         var rowContent='<tr><td>'+data[0].request_id+'</td>'+
         '<td>'+data[0].social+'</td>'+
         '<td>'+data[0].client_name+'</td>'+
@@ -131,10 +131,9 @@ function moreInfo(body){
         '<td>'+data[0].due_date+'</td>'+
         '<td>'+data[0].previous_insurance_company+'</td>'+
         '<td>'+data[0].prevrequestnumber+'</td>'+
-        '<td>'+data[0].insuranceCompanyfee+'</td>'+
+        '<td>'+data[0].insurancecompanyfee+'</td>'+
         '<td>'+data[0].insuranceenable+'</td>'+
         '<td>'+data[0].dateofenblment+'</td>'+
-        '<td>'+data[0].CarStatus+'</td>'+
         '<td>'+data[0].userrank+'</td>'+
         '<td>'+data[0].message+'</td>'+
         '</tr>';
@@ -146,6 +145,4 @@ function moreInfo(body){
    
 
     });
-    // $("#dataTable").DataTable().destroy();
-    // loadTable();
 }

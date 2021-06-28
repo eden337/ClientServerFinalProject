@@ -24,28 +24,25 @@ app.use('/static', express.static('./'));
 client representing the website to declare and connect as  a client to the postgresql database
 */
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false
-    }
-  });
-  client.connect();
+// const client = new Client({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false
+//     }
+//   });
+//   client.connect();
   /*-----END-----*/
 
   /*-----START----- postgres local*/
 
-//   const client =new Client ({
-//     host: 'localhost', // server name or IP address;
-//     port: 5432,
-//     database: 'postgres',
-//     user: 'postgres',
-//     password: 'Yh321789654'
-// });
+  const client =new Client ({
+    host: 'localhost', // server name or IP address;
+    port: 5432,
+    database: 'postgres',
+    user: 'postgres',
+    password: 'Spidy_@337'
+});
 client.connect(function(err,result){
-    // if(err){
-    //     throw err;
-    // }
     console.log("Connected to db");
 });
   /*-----END-----*/
@@ -72,22 +69,17 @@ app.get('/new_insurance', function (req, res) {
 app.get('/thankyou',function(req,res){
     res.sendFile(path.join(__dirname, '/html/thankyou.html'));
 });
-/*  Finished working in local
-    Need to check online*/
+
 app.post('/send-request',urlEncodedParser,function(req,res){
     var request_id=randomInt(1,10000);
     client.query("select * from requests where request_id ='"+request_id+"'",function(err,data){
         if(err){
             throw err;
         }
-       // console.log(data.rows[0]);
         if(data!==null){
-            //console.log("entered");
-            //irelavant
             request_id=randomInt(1,10000);
         }
     });
-    //console.log(request_id);
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
@@ -99,11 +91,10 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var comment=req.body.comment2;
     var userRank = randomInt(1,5);
     var user={};
-    var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, PrevRequestNumber, insuranceEnable,dateofEnblment,userrank,message,insurancecompanyfee) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)";
+    var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, prevrequestnumber, insuranceenable,dateofenblment,userrank,message,insurancecompanyfee) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)";
     const path ='./json/'+req.body.fname2+req.body.lname2+'.json';
     
-    //if(name==="Yossi Lavi"||name === "Israel Israeli" || name ==="Moshe Cohen"){
-        if(fs.existsSync(path)){
+    if(fs.existsSync(path)){
         fs.readFile(path, 'utf8', (err, jsonString) => {
             if (err) {
                 console.log("Error reading file from disk:", err);
@@ -119,8 +110,8 @@ app.post('/send-request',urlEncodedParser,function(req,res){
                 }
                 });
                 
-        } catch(err) {
-                console.log('Error parsing JSON string:', err);
+        } catch(error) {
+                console.log('Error parsing JSON string:', error);
             }
         });
     }
@@ -168,8 +159,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     res.send('/thankyou');
     
 });
-/*  Finished working in local
-    Need to check online*/
+
 app.post('/DB-login',urlEncodedParser,function(req,res){
     var user=req.body.email;
     var pass=req.body.pass;
@@ -185,37 +175,7 @@ app.post('/DB-login',urlEncodedParser,function(req,res){
     });
 })
 
-/*  Need working in local
-    Need to check online*/
-app.post('/calculate', function (req, res) {
-    var name=req.body.name;
-    var amount=req.body.amount;
-    console.log(name);
-    var data = fs.readFileSync(name+".json");
-    var severity="";
-    const UTF8_BOM = "\u{FEFF}";                    
-    if( data.includes(UTF8_BOM)){
-        data.subarray(1);
-    }
-    var jsonContent =JSON.parse(data);
-    // //res.append("eden","yuda");
-    // switch(jsonContent.UserRank){
-    //     case "1":
-    //         res.append("eden","yuda1");
-    //         break;
-    //     case "2":
-    //         res.append("eden","yuda2");
-    //         break;
-    //     case "3":
-    //         res.append("eden","yuda3");
-    //         break;
-    //     case "4":
-    //         res.append("eden","yuda4");
-    //         break;
-    // }
-    // console.log(jsonContent.UserRank +" "+ res.get("eden"));
-    return res.json(jsonContent);
-});
+
 
 app.get('/piechart',function(req,res){
     var low =0;
@@ -322,14 +282,12 @@ app.get('/usersTable',function(req,res){
 });
 
 
-app.post('/test',urlEncodedParser, function (req, res) {
+app.post('/calculate',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
     clientName =clientName.replace(/\s+/g,'').trim();
-    var amount=req.body.amount;
     var severity;
     var userData = fs.readFileSync("./json/"+clientName+".json");
     var id;
-    //  var userData = fs.readFileSync("./json/IsraelIsraeli.json");
     const UTF8_BOM = "\u{FEFF}";                    
     if( userData.includes(UTF8_BOM)){
         userData.subarray(1);
@@ -341,7 +299,6 @@ app.post('/test',urlEncodedParser, function (req, res) {
         policyData.subarray(1);
     }
     var policyJsonContent =JSON.parse(policyData);
-    var txt="";
     for(i in policyJsonContent){
         if(policyJsonContent[i][0].UserRank==userJsonContent.UserRank){
             id=userJsonContent.insuranceData[0].PrevinsuranceID;
@@ -353,24 +310,14 @@ app.post('/test',urlEncodedParser, function (req, res) {
             });
         }
     }
-    console.log(userJsonContent);
     client.query("SELECT * from requests where previous_insurance_id='"+id+"'",function(err,data){
         if(err){throw err;}
-        console.log(data.rows);
         return res.json(data.rows);
-    })
-})
-app.get('/yuda',urlEncodedParser, function (req, res) {
-    console.log(hash);
-    return res.send(hash);
-})
-
-
-
-
+    });
+});
 
 
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/404.html'));
-})
+});
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`)); 
