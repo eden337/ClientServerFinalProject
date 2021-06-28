@@ -10,6 +10,8 @@ var amount;
 var colIndex;
 var rowIndex;
 
+
+//loading Table after the page is loaded
 function loadTable()
 {
     $.ajax({
@@ -35,6 +37,7 @@ function loadTable()
 
                     
               });
+              //constucting the data table
             myTable =  $('#dataTable').DataTable( {
                     dom: 'Bfrtip',  
                     data: data,  
@@ -66,7 +69,7 @@ function loadTable()
 }
 $(document).ready(function() {  
     loadTable();
-    
+    //Initialize of More Info table
     moreInfoTable =  $('#infoTable').DataTable( {
         dom: 'Bfrtip',   
         rowId:'Button',
@@ -76,14 +79,13 @@ $(document).ready(function() {
             name: 'testj2e'
         }]                  
         
-}); 
-
+    }); 
 });
+
+//updating severity level after pressing on the calculator
 function Calculate(body){
     $.post('/calculate',{clientName},function(data,status){
-        console.log(JSON.stringify(data));
         var color='danger';
-        console.log(data[0].severity);
         switch(data[0].severity){
             case 'Low':
                 color='success';
@@ -110,7 +112,7 @@ function Calculate(body){
     });
 }
 
-
+//after pressing the 3 dots, more info will be displayed on the "More info" table 
 function moreInfo(body){
     $.post('/client-Info',{clientName},function(data,status){
 
@@ -139,10 +141,6 @@ function moreInfo(body){
         '</tr>';
         $('#infoTable').append(rowContent);
         $('#infoTable')[0].rows[1].remove();
-
-
-
-   
 
     });
 }

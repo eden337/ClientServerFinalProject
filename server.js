@@ -12,7 +12,7 @@ const { Client } = require('pg');
 
 var bodyParser = require('body-parser');
 const { randomInt } = require('crypto');
-const { response } = require('express');
+
 //Port of web or 8080 in localHOST
 var PORT = process.env.PORT || 8080
 //Used to parse data on POST
@@ -51,27 +51,43 @@ client.connect(function(err,result){
 //Default of the website go to Home page
 app.get('/', function (req, res) {
     return res.redirect("/sign-in");
-})
+});
 
+//Sign in page 
 app.get('/sign-in',function (req, res) {
     res.sendFile(path.join(__dirname, '/html/signInPage.html'));
-})
+});
+
+//Dashboard page
 app.get('/dashboard', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/dashboard.html'));
-})
+});
+
+//Users page
 app.get('/users', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/users.html'));
-})
+});
 
+
+
+//New Insurence request page
 app.get('/new_insurance', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/insurance_details.html'));
-})
+});
+
+//Success page
 app.get('/thankyou',function(req,res){
     res.sendFile(path.join(__dirname, '/html/thankyou.html'));
 });
 
+
+//Sending new request 
+
 app.post('/send-request',urlEncodedParser,function(req,res){
+    //randomizing a request id number;
     var request_id=randomInt(1,10000);
+
+    //Check if the id is already exists and if true, randomize another
     client.query("select * from requests where request_id ='"+request_id+"'",function(err,data){
         if(err){
             throw err;
@@ -80,6 +96,8 @@ app.post('/send-request',urlEncodedParser,function(req,res){
             request_id=randomInt(1,10000);
         }
     });
+
+
     var social=req.body.social_num2;
     var name=req.body.fname2+" "+req.body.lname2;
     var email=req.body.email2;
@@ -89,11 +107,17 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     var pre_ins_id=req.body.pre_ins_id2;
     var pre_ins_comp=req.body.pre_ins_comp2;
     var comment=req.body.comment2;
+    //randomizing userRank for new request 
     var userRank = randomInt(1,5);
+    //creating a user object
     var user={};
+
+    //This Sql command is to insert the new request data into the requests table on the DB
     var sql ="insert into requests (request_id, client_name,social,email,phone,insurance_amount,previous_insurance_number,previous_insurance_id,previous_insurance_company,comment,category, companyUserId, prevrequestnumber, insuranceenable,dateofenblment,userrank,message,insurancecompanyfee) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)";
     const path ='./json/'+req.body.fname2+req.body.lname2+'.json';
     
+    //If the json file of the mentioned name already exists, the data that will be sent is from the existing file
+
     if(fs.existsSync(path)){
         fs.readFile(path, 'utf8', (err, jsonString) => {
             if (err) {
@@ -116,6 +140,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
         });
     }
     else{
+        //building new user object 
             user={
             "insuranceType": "CarInsurance",
             "FirstName": req.body.fname2,
@@ -140,7 +165,7 @@ app.post('/send-request',urlEncodedParser,function(req,res){
             "comment": comment,
             "message": "accident with car Golf in Tel Aviv"
         };
-
+        //writing a new json file for the new user object
         fs.writeFile("./json/"+req.body.fname2+req.body.lname2+".json",JSON.stringify(user,null,2),function(err,res){
             if(err)
             {
@@ -160,6 +185,8 @@ app.post('/send-request',urlEncodedParser,function(req,res){
     
 });
 
+
+//Connecting to web app after pressing on login button
 app.post('/DB-login',urlEncodedParser,function(req,res){
     var user=req.body.email;
     var pass=req.body.pass;
@@ -173,10 +200,10 @@ app.post('/DB-login',urlEncodedParser,function(req,res){
                 }
             res.send("not ok");
     });
-})
+});
 
 
-
+//pichart calculation 
 app.get('/piechart',function(req,res){
     var low =0;
     var medium=0;
@@ -216,6 +243,8 @@ app.get('/piechart',function(req,res){
     });
 });
 
+
+//loading the table into the dashboard
 app.get('/dashboardTable',function(req,res){
     var low =0;
     var medium=0;
@@ -261,10 +290,9 @@ app.get('/dashboardTable',function(req,res){
 });
 
 
-
+//loading more info table when the user clicks on 3 dots
 app.post('/client-Info',urlEncodedParser, function (req, res){
     var name = req.body.clientName;
-    console.log(name);
     client.query("SELECT * from requests where client_name='"+name+"'",function(err,data){
         if(err){
             throw err;
@@ -273,6 +301,8 @@ app.post('/client-Info',urlEncodedParser, function (req, res){
     });
 });
 
+
+//loading data into the users table
 app.get('/usersTable',function(req,res){
     client.query("select client_name, category, insurance_amount, previous_insurance_company, status from requests;",function(err,data){
         if(err)
@@ -281,7 +311,7 @@ app.get('/usersTable',function(req,res){
     });
 });
 
-
+//calculating the severity level
 app.post('/calculate',urlEncodedParser, function (req, res) {
     var clientName=req.body.clientName;
     clientName =clientName.replace(/\s+/g,'').trim();
@@ -316,8 +346,10 @@ app.post('/calculate',urlEncodedParser, function (req, res) {
     });
 });
 
-
+//Go to error page
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, '/html/404.html'));
 });
+
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`)); 
